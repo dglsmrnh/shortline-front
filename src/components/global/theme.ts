@@ -3,12 +3,8 @@ export default {
     background: '#FFF',
     shapeBackground: '#ECECEC',
     innerBackground: '#DEDEDE',
-    primary: 'DCD6EE'
-  },
-
-  fonts: {
-    regular: 'Poppins_400Regular',
-    medium: 'Poppins_500Medium',
-    bold: 'Poppins_700Bold'
+    primary: '#DCD6EE',
+    button: '#8466D8',
+    text: '#000'
   }
 }

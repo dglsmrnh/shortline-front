@@ -7,12 +7,18 @@ import {
   Title,
   UserIcon,
   Body,
-  QueueList
+  QueueListContainer,
+  ListTitle,
+  QueueInsideList,
+  Graphic,
+  Button
 } from "./styles.ts";
 import QueueItem from '../../../components/custom/QueueItem/QueueItem';
 
+import theme from "src/components/global/theme.ts";
+
 const MainMenu = () => {
-  let isCompany; //Vem do backend
+  let isCompany = true; //Vem do backend
   let queueList = [ //Vem do backend
       {
         name: 'Fila 1',
@@ -23,30 +29,55 @@ const MainMenu = () => {
         people: 0
     }
   ]
+  const btnTheme = {
+    '--cui-btn-bg': theme.colors.button
+  }
 
   if(isCompany) {
     return(
-      <Container>
-        <Header>
-          <MainIcon></MainIcon>
-          <Title>ShortLine</Title>
-          <UserIcon></UserIcon>
-        </Header>
-        <Body>
-          <QueueList>
-            {queueList.forEach(element => {
-              <>
-                <QueueItem title={element.title} people={element.people}></QueueItem>
-              </>
-            })}
-          </QueueList>
-        </Body>
-      </Container>
+      <div>
+        <Container>
+          <Header>
+            <MainIcon ></MainIcon>
+            <Title>ShortLine</Title>
+            <UserIcon></UserIcon>
+          </Header>
+          <Body>
+            <QueueListContainer>
+              <ListTitle>Minhas filas</ListTitle>
+              <QueueInsideList>
+                {queueList.forEach(element => {
+                  <QueueItem title={element.name} people={element.people}></QueueItem>
+                })}
+              </QueueInsideList>
+              <Button style={btnTheme}>Nova fila</Button>
+            </QueueListContainer>
+            <Graphic></Graphic>
+          </Body>
+        </Container>
+      </div>
+
     )
   }
   else {
     return(
-      <Container></Container>
+      <div>
+      <Container>
+        <Header>
+          <MainIcon ></MainIcon>
+          <Title>ShortLine</Title>
+          <UserIcon></UserIcon>
+        </Header>
+        <Body>
+          <Button>
+            Entrar em uma fila/ver a fila atual
+          </Button>
+          <Button>
+            Histórico
+          </Button>
+        </Body>
+      </Container>
+    </div>
     )
   }
 
