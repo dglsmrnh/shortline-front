@@ -15,7 +15,7 @@ import {
 } from "./styles.ts";
 import QueueItem from '../../../components/custom/QueueItem/QueueItem';
 
-import theme from "src/components/global/theme.ts";
+import theme from "src/components/global/theme";
 
 const MainMenu = () => {
   let isCompany = true; //Vem do backend
@@ -46,9 +46,7 @@ const MainMenu = () => {
             <QueueListContainer>
               <ListTitle>Minhas filas</ListTitle>
               <QueueInsideList>
-                {queueList.forEach(element => {
-                  <QueueItem title={element.name} people={element.people}></QueueItem>
-                })}
+                <QueueItem title={queueList[0].name} people={queueList[0].people}></QueueItem>
               </QueueInsideList>
               <Button style={btnTheme}>Nova fila</Button>
             </QueueListContainer>

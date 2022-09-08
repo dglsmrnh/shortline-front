@@ -1,6 +1,6 @@
 import { CCardText, CContainer, CImage } from "@coreui/react";
 import styled from "styled-components";
-import theme from "src/components/global/theme.ts";
+import theme from "src/components/global/theme";
 
 import personIcon from '../../../assets/images/person.png';
 
@@ -26,7 +26,8 @@ export const Amount = styled(CCardText)`
 ;
 export const Icon = styled(CImage).attrs({
   src: personIcon,
-  height: '20'
+  height: '20',
+  width: '20'
 })`
 
 `
