@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from 'prop-types'
+
 import {
   Container,
   Title,
@@ -7,12 +9,19 @@ import {
   Icon
 } from "./styles.ts";
 
-const QueueItem = (title, people) => {
+
+
+const QueueItem = (props) => {
+  QueueItem.propTypes = {
+    title: PropTypes.string,
+    people: PropTypes.number
+  }
+
   return(
     <Container>
-      <Title>{title}</Title>
+      <Title>{props.title}</Title>
       <AmountContainer>
-        <Amount>{people}</Amount>
+        <Amount>{props.people}</Amount>
         <Icon></Icon>
       </AmountContainer>
     </Container>

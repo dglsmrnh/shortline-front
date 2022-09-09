@@ -64,8 +64,9 @@ export const Body = styled(CContainer)`
 
 export const QueueListContainer = styled(CContainer)`
   background-color: ${theme.colors.shapeBackground};
-  margin: 25px;
-  width: 43%;
+  margin-left: 100px;
+  margin-right: 10px;
+  width: 42%;
   padding: 10px;
   border-radius: 5px;
   border-style: solid;
@@ -83,6 +84,15 @@ export const ListTitle = styled(CCardText)`
 `;
 
 export const QueueInsideList = styled(CContainer)`
+  display: flex;
+  background-color: ${theme.colors.innerBackground};
+  border-radius: 5px;
+  border-style: solid;
+  border-color: ${theme.colors.text};
+  border-width: 1px;
+  margin-bottom: 10px;
+  padding: 0px;
+  justify-content: center;
 `;
 
 export const Graphic = styled(CContainer)`

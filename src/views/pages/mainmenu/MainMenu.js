@@ -21,14 +21,15 @@ const MainMenu = () => {
   let isCompany = true; //Vem do backend
   let queueList = [ //Vem do backend
       {
-        name: 'Fila 1',
+        title: 'Fila 1',
         people: 3
     },
       {
-        name: 'Fila 2',
+        title: 'Fila 2',
         people: 0
     }
-  ]
+  ];
+
   const btnTheme = {
     '--cui-btn-bg': theme.colors.button
   }
@@ -46,7 +47,11 @@ const MainMenu = () => {
             <QueueListContainer>
               <ListTitle>Minhas filas</ListTitle>
               <QueueInsideList>
-                <QueueItem title={queueList[0].name} people={queueList[0].people}></QueueItem>
+                {queueList.map((element, i) => {
+                  return(
+                    <QueueItem key={element.title} title={element.title} people={element.people}></QueueItem>
+                  )
+                })}
               </QueueInsideList>
               <Button style={btnTheme}>Nova fila</Button>
             </QueueListContainer>
