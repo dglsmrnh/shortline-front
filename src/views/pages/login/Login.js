@@ -81,7 +81,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="success" className="success px-4" onClick={handleLoginClick}>
+                        <CButton color="success" style={{ color:'#fff', fontWeight:"bold"}}  className="success px-4" onClick={handleLoginClick}>
                           Entrar
                         </CButton>
                       </CCol>
@@ -94,7 +94,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-success py-5" style={{ width: '44%' }}>
+              <CCard className="text-white bg-success py-5" >
                 <CCardBody className="text-center">
                   <div>
                     <h2>Esqueça as filas</h2>
@@ -103,7 +103,7 @@ const Login = () => {
                       preocupará sobre sair cedo ou ficar em pé durante muito tempo.
                     </p>
                     <Link to="/register">
-                      <CButton color="dark" className="mt-3" active tabIndex={-1}>
+                      <CButton style={{ backgroundColor:'#fff', color:'#1ea84c', border:"none", fontWeight:"bold"}} className="mt-3" active tabIndex={-1}>
                         Registre-se agora!
                       </CButton>
                     </Link>
