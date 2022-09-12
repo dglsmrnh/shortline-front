@@ -3,8 +3,9 @@ export default {
     background: '#FFF',
     shapeBackground: '#ECECEC',
     innerBackground: '#DEDEDE',
-    primary: '#DCD6EE',
-    button: '#8466D8',
+    primary: '#2EB85C',
+    primaryLight: '#5EE88C',
+    button: '#0E983C',
     text: '#000'
   }
 }

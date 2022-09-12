@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from 'prop-types'
 
 import {
-  Container,
   Title,
   AmountContainer,
   Amount,
-  Icon
+  Icon,
+  Button
 } from "./styles.ts";
 
 
@@ -18,13 +18,13 @@ const QueueItem = (props) => {
   }
 
   return(
-    <Container>
+    <Button>
       <Title>{props.title}</Title>
       <AmountContainer>
         <Amount>{props.people}</Amount>
         <Icon></Icon>
       </AmountContainer>
-    </Container>
+    </Button>
   )
 }
 

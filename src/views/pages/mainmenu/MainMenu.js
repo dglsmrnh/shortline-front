@@ -10,7 +10,8 @@ import {
   QueueListContainer,
   ListTitle,
   QueueInsideList,
-  Graphic,
+  ChartsContainer,
+  Chart,
   Button
 } from "./styles.ts";
 import QueueItem from '../../../components/custom/QueueItem/QueueItem';
@@ -29,10 +30,6 @@ const MainMenu = () => {
         people: 0
     }
   ];
-
-  const btnTheme = {
-    '--cui-btn-bg': theme.colors.button
-  }
 
   if(isCompany) {
     return(
@@ -53,13 +50,57 @@ const MainMenu = () => {
                   )
                 })}
               </QueueInsideList>
-              <Button style={btnTheme}>Nova fila</Button>
+              <Button>Nova fila</Button>
             </QueueListContainer>
-            <Graphic></Graphic>
+            <ChartsContainer>
+              <Chart
+                width={530}
+                height={300}
+                labels="Meses"
+                type="bar"
+                data={{
+                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                  datasets: [
+                    {
+                      label: 'Pessoas atendidas',
+                      backgroundColor: theme.colors.primaryLight,
+                      data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
+                    }
+                  ]
+                }}></Chart>
+              <Chart
+                width={530}
+                height={300}
+                type="bar"
+                data={{
+                  labels: ["Janeiro", "Fevereiro", "Março", "Abril"],
+                  datasets: [
+                    {
+                      label: 'Ótimo',
+                      backgroundColor: '#41B883',
+                      data: [40, 20, 80, 10],
+                    },
+                    {
+                      label: 'Bom',
+                      backgroundColor: '#E46651',
+                      data: [30, 50, 10, 60]
+                    },
+                    {
+                      label: 'Regular',
+                      backgroundColor: '#00D8FF',
+                      data: [40, 70, 10, 80]
+                    },
+                    {
+                      label: 'Ruim',
+                      backgroundColor: '#DD1B16',
+                      data: [10, 10, 10, 10]
+                    }
+                  ],
+                }}></Chart>
+            </ChartsContainer>
           </Body>
         </Container>
       </div>
-
     )
   }
   else {

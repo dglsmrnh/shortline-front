@@ -8,6 +8,7 @@ import {
 import theme from "src/components/global/theme";
 import iconPng from '../../../assets/images/iconpng.png';
 import avatar7 from '../../../assets/images/avatars/7.jpg';
+import { CChart } from "@coreui/react-chartjs";
 
 interface QueueProps {
   title: string,
@@ -31,6 +32,7 @@ export const Header = styled(CContainer)`
   border-width: 1px;
   border-bottom: solid;
   border-radius: 5px;
+  margin-bottom: 77px;
 `;
 
 export const MainIcon = styled(CImage).attrs({
@@ -60,19 +62,22 @@ export const UserIcon = styled(CImage).attrs({
 
 export const Body = styled(CContainer)`
   font-family: 'Poppins';
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 78px;
 `;
 
 export const QueueListContainer = styled(CContainer)`
   background-color: ${theme.colors.shapeBackground};
   margin-left: 100px;
-  margin-right: 10px;
+  margin-right: 20px;
   width: 42%;
+  height: 650px;
   padding: 10px;
   border-radius: 5px;
   border-style: solid;
   border-color: ${theme.colors.text};
   border-width: 1px;
-  justify-content: center;
   display: flex;
   flex-direction: column;
 `;
@@ -81,6 +86,8 @@ export const ListTitle = styled(CCardText)`
   text-align: center;
   font-family: 'Poppins';
   font-size: 24px;
+  margin-top: 13px;
+  margin-bottom: 25px;
 `;
 
 export const QueueInsideList = styled(CContainer)`
@@ -92,15 +99,32 @@ export const QueueInsideList = styled(CContainer)`
   border-width: 1px;
   margin-bottom: 10px;
   padding: 0px;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 69%;
+  max-height: 69%;
+
 `;
 
-export const Graphic = styled(CContainer)`
+export const ChartsContainer = styled(CContainer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 42%;
+  height: 60%;
+  margin-left: 20px;
+`;
 
+export const Chart = styled(CChart)`
+  margin-bottom: 25px;
 `;
 
 export const Button = styled(CButton).attrs({
-
+  color: 'success'
 })`
-
+  height: 12%;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
 `;

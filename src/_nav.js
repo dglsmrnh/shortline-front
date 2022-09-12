@@ -279,6 +279,11 @@ const _nav = [
       },
       {
         component: CNavItem,
+        name: 'Main Menu',
+        to: '/mainmenu'
+      },
+      {
+        component: CNavItem,
         name: 'Register',
         to: '/register',
       },
