@@ -58,6 +58,7 @@ export const UserIcon = styled(CImage).attrs({
   border-style: solid;
   border-width: 1px;
   border-color: ${theme.colors.text};
+  cursor: pointer;
 `;
 
 export const Body = styled(CContainer)`
@@ -118,6 +119,16 @@ export const ChartsContainer = styled(CContainer)`
 
 export const Chart = styled(CChart)`
   margin-bottom: 25px;
+`;
+
+export const UserButtonsContainer = styled(CContainer)`
+  font-family: 'Poppins';
+  width: 90vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Button = styled(CButton).attrs({

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Container,
@@ -12,14 +12,16 @@ import {
   QueueInsideList,
   ChartsContainer,
   Chart,
-  Button
+  Button,
+  UserButtonsContainer
 } from "./styles.ts";
 import QueueItem from '../../../components/custom/QueueItem/QueueItem';
 
 import theme from "src/components/global/theme";
 
 const MainMenu = () => {
-  let isCompany = true; //Vem do backend
+
+  let [isCompany, setIsCompany] = useState(false);
   let queueList = [ //Vem do backend
       {
         title: 'Fila 1',
@@ -31,6 +33,15 @@ const MainMenu = () => {
     }
   ];
 
+  function handleIconClick() {
+    if(isCompany) {
+      setIsCompany(false);
+    }
+    else {
+      setIsCompany(true);
+    }
+  }
+
   if(isCompany) {
     return(
       <div>
@@ -38,7 +49,7 @@ const MainMenu = () => {
           <Header>
             <MainIcon ></MainIcon>
             <Title>ShortLine</Title>
-            <UserIcon></UserIcon>
+            <UserIcon onClick={handleIconClick}></UserIcon>
           </Header>
           <Body>
             <QueueListContainer>
@@ -110,16 +121,16 @@ const MainMenu = () => {
         <Header>
           <MainIcon ></MainIcon>
           <Title>ShortLine</Title>
-          <UserIcon></UserIcon>
+          <UserIcon onClick={handleIconClick}></UserIcon>
         </Header>
-        <Body>
-          <Button>
-            Entrar em uma fila/ver a fila atual
-          </Button>
-          <Button>
-            Histórico
-          </Button>
-        </Body>
+          <UserButtonsContainer>
+            <Button>
+              Entrar em uma fila/ver a fila atual
+            </Button>
+            <Button>
+              Histórico
+            </Button>
+          </UserButtonsContainer>
       </Container>
     </div>
     )
