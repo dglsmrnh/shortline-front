@@ -13,25 +13,29 @@ import {
   ChartsContainer,
   Chart,
   Button,
-  UserButtonsContainer
+  UserButtonsContainer,
+  Modal
 } from "./styles.ts";
 import QueueItem from '../../../components/custom/QueueItem/QueueItem';
+import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import theme from "src/components/global/theme";
+import swal from "sweetalert";
 
 const MainMenu = () => {
 
   let [isCompany, setIsCompany] = useState(false);
-  let queueList = [ //Vem do backend
+  let [modalVisible, setModalVisible] = useState(false);
+  let [queueList, setQueueList] = useState([ //Vem do backend
       {
-        title: 'Fila 1',
-        people: 3
+        name: 'Fila 1',
+        peopleOnIt: 3
     },
       {
-        title: 'Fila 2',
-        people: 0
+        name: 'Fila 2',
+        peopleOnIt: 0
     }
-  ];
+  ]);
 
   function handleIconClick() {
     if(isCompany) {
@@ -42,12 +46,41 @@ const MainMenu = () => {
     }
   }
 
+  function handleSelectQueueClick(){
+    window.location.href = ""
+  }
+
+  function handleNewQueueClick() {
+    setModalVisible(true);
+  }
+
+  const saveNewQueue = (newQueue) => {
+    console.log(newQueue);
+    if(newQueue.name.trim() === '') {
+      swal("Insira um nome para a nova fila");
+    }
+    else if(newQueue.maxAmount <= 0) {
+      swal("Insira uma quantidade máxima válida");
+    }
+    else if(newQueue.openingDate < Date.now()) {
+      swal("Insira uma data de abertura válida");
+    }
+    else if(newQueue.closingDate < Date.now() || newQueue.closingDate < newQueue.openingDate) {
+      swal("Insira uma data de fechamento válida");
+    }
+    else {
+      setModalVisible(false);
+      setQueueList([...queueList, newQueue]);
+    }
+
+  }
+
   if(isCompany) {
     return(
       <div>
         <Container>
           <Header>
-            <MainIcon ></MainIcon>
+            <MainIcon></MainIcon>
             <Title>ShortLine</Title>
             <UserIcon onClick={handleIconClick}></UserIcon>
           </Header>
@@ -57,11 +90,11 @@ const MainMenu = () => {
               <QueueInsideList>
                 {queueList.map((element, i) => {
                   return(
-                    <QueueItem key={element.title} title={element.title} people={element.people}></QueueItem>
+                    <QueueItem onClick={handleSelectQueueClick} key={element.title} name={element.name} people={element.peopleOnIt}></QueueItem>
                   )
                 })}
               </QueueInsideList>
-              <Button>Nova fila</Button>
+              <Button onClick={handleNewQueueClick}>Nova fila</Button>
             </QueueListContainer>
             <ChartsContainer>
               <Chart
@@ -110,6 +143,10 @@ const MainMenu = () => {
                 }}></Chart>
             </ChartsContainer>
           </Body>
+          <Modal visible={modalVisible} onClose={() => setModalVisible(false)}>
+            <NewQueueModal saveNewQueue={saveNewQueue} closeModal={() => setModalVisible(false)}>
+            </NewQueueModal>
+          </Modal>
         </Container>
       </div>
     )
