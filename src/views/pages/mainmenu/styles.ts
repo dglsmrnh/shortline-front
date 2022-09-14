@@ -3,7 +3,8 @@ import {
   CContainer,
   CCardText,
   CImage,
-  CButton
+  CButton,
+  CModal
 } from "@coreui/react";
 import theme from "src/components/global/theme";
 import iconPng from '../../../assets/images/iconpng.png';
@@ -138,4 +139,8 @@ export const Button = styled(CButton).attrs({
   width: 100%;
   margin-top: 15px;
   margin-bottom: 15px;
+`;
+
+export const Modal = styled(CModal)`
+
 `;

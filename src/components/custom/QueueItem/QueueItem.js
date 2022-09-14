@@ -9,17 +9,15 @@ import {
   Button
 } from "./styles.ts";
 
-
-
 const QueueItem = (props) => {
   QueueItem.propTypes = {
-    title: PropTypes.string,
+    name: PropTypes.string,
     people: PropTypes.number
   }
 
   return(
     <Button>
-      <Title>{props.title}</Title>
+      <Title>{props.name}</Title>
       <AmountContainer>
         <Amount>{props.people}</Amount>
         <Icon></Icon>
