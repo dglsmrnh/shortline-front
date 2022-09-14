@@ -56,17 +56,17 @@ const MainMenu = () => {
 
   const saveNewQueue = (newQueue) => {
     console.log(newQueue);
-    if(newQueue.name.trim() === '') {
-      swal("Insira um nome para a nova fila");
+    if(!newQueue.name || newQueue.name.trim() === '') {
+      swal("Erro", "Insira um nome para a nova fila", "error");
     }
-    else if(newQueue.maxAmount <= 0) {
-      swal("Insira uma quantidade máxima válida");
+    else if(newQueue.maxAmount <= 0 || !newQueue.maxAmount) {
+      swal("Erro", "Insira uma quantidade máxima válida", "error");
     }
-    else if(newQueue.openingDate < Date.now()) {
-      swal("Insira uma data de abertura válida");
+    else if(newQueue.openingDate < Date.now() || !newQueue.openingDate) {
+      swal("Erro", "Insira uma data de abertura válida", "error");
     }
-    else if(newQueue.closingDate < Date.now() || newQueue.closingDate < newQueue.openingDate) {
-      swal("Insira uma data de fechamento válida");
+    else if(newQueue.closingDate < Date.now() || !newQueue.closingDate || newQueue.closingDate < newQueue.openingDate) {
+      swal("Erro", "Insira uma data de fechamento válida", "error");
     }
     else {
       setModalVisible(false);
