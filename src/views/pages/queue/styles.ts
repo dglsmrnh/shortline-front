@@ -1,20 +1,16 @@
 import styled from "styled-components";
+
 import {
   CContainer,
-  CCardText,
   CImage,
-  CButton,
-  CModal
+  CCardText,
+  CCard,
+  CButton
 } from "@coreui/react";
+
 import theme from "src/components/global/theme";
 import iconPng from '../../../assets/images/iconpng.png';
 import avatar7 from '../../../assets/images/avatars/7.jpg';
-import { CChart } from "@coreui/react-chartjs";
-
-interface QueueProps {
-  title: string,
-  people: string
-}
 
 export const Container = styled(CContainer)`
   width: 100%;
@@ -50,40 +46,6 @@ export const Title = styled(CCardText)`
   font-size: 40px;
 `;
 
-export const UserIcon = styled(CImage).attrs({
-  src: avatar7,
-  width: "80",
-  height: "80"
-})`
-  border-radius: 40px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${theme.colors.text};
-  cursor: pointer;
-`;
-
-export const Body = styled(CContainer)`
-  font-family: 'Poppins';
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 78px;
-`;
-
-export const QueueListContainer = styled(CContainer)`
-  background-color: ${theme.colors.shapeBackground};
-  margin-left: 100px;
-  margin-right: 20px;
-  width: 42%;
-  height: 650px;
-  padding: 10px;
-  border-radius: 5px;
-  border-style: solid;
-  border-color: ${theme.colors.text};
-  border-width: 1px;
-  display: flex;
-  flex-direction: column;
-`;
-
 export const ListTitle = styled(CCardText)`
   text-align: center;
   font-family: 'Poppins';
@@ -103,44 +65,74 @@ export const QueueInsideList = styled(CContainer)`
   padding: 0px;
   align-items: center;
   flex-direction: column;
-  min-height: 69%;
-  max-height: 69%;
+  min-height: 87%;
+  max-height: 87%;
   overflow-y: scroll;
 `;
 
-export const ChartsContainer = styled(CContainer)`
+export const UserIcon = styled(CImage).attrs({
+  src: avatar7,
+  width: "80",
+  height: "80"
+})`
+  border-radius: 40px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: ${theme.colors.text};
+  cursor: pointer;
+`;
+
+
+export const Body = styled(CContainer)`
+  font-family: 'Poppins';
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 78px;
+`;
+
+export const QueueContainer = styled(CCard)`
+  background-color: ${theme.colors.shapeBackground};
+  margin-left: 100px;
+  margin-right: 20px;
+  width: 42%;
+  height: 60vh;
+  padding: 10px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: ${theme.colors.text};
+  border-width: 1px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const RightSideContainer = styled(CContainer)`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   width: 42%;
-  height: 60%;
+  height: 60vh;
   margin-left: 20px;
+  margin-right: 100px;
 `;
 
-export const Chart = styled(CChart)`
-  margin-bottom: 25px;
-`;
-
-export const UserButtonsContainer = styled(CContainer)`
-  font-family: 'Poppins';
-  width: 90vw;
-  height: 80vh;
+export const RequestsContainer = styled(CCard)`
+  background-color: ${theme.colors.shapeBackground};
+  width: 100%;
+  height: 30vh;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: ${theme.colors.text};
+  border-width: 1px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
-export const Button = styled(CButton).attrs({
-  color: 'success'
-})`
-  height: 12%;
-  width: 100%;
-  margin-top: 15px;
-  margin-bottom: 15px;
+export const CloseButton = styled(CButton)`
+
 `;
 
-export const Modal = styled(CModal)`
+export const DeleteButton = styled(CButton)`
 
 `;

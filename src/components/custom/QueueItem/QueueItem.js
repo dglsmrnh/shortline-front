@@ -12,11 +12,12 @@ import {
 const QueueItem = (props) => {
   QueueItem.propTypes = {
     name: PropTypes.string,
-    people: PropTypes.number
+    people: PropTypes.number,
+    onClick: PropTypes.func
   }
 
   return(
-    <Button>
+    <Button onClick={props.onClick}>
       <Title>{props.name}</Title>
       <AmountContainer>
         <Amount>{props.people}</Amount>

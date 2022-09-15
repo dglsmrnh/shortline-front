@@ -1,10 +1,16 @@
-import { CCardText, CButton, CContainer, CImage } from "@coreui/react";
 import styled from "styled-components";
-import theme from "src/components/global/theme";
 
+import {
+  CImage,
+  CContainer,
+  CCardText,
+  CButton
+} from "@coreui/react";
+
+import theme from "src/components/global/theme";
 import personIcon from '../../../assets/images/person.png';
 
-export const Button = styled(CButton).attrs({
+export const Frame = styled(CContainer).attrs({
   color: 'success'
 })`
   display: flex;
@@ -36,7 +42,6 @@ export const Title = styled(CCardText)`
 export const AmountContainer = styled(CContainer)`
   display: flex;
   flex-direction: row;
-  width: 20%;
   align-items: center;
   justify-content: center;
 `
@@ -57,4 +62,11 @@ export const Icon = styled(CImage).attrs({
 
 `;
 
+export const InQueueButton = styled(CButton).attrs({
+})`
+  min-height: 50px;
+  min-width: 70px;
+  font-size: 9px;
+  margin-right: 5px;
+`;
 

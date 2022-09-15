@@ -24,7 +24,7 @@ import swal from "sweetalert";
 
 const MainMenu = () => {
 
-  let [isCompany, setIsCompany] = useState(false);
+  let [isCompany, setIsCompany] = useState(false); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
   let [queueList, setQueueList] = useState([ //Vem do backend
       {
@@ -46,8 +46,8 @@ const MainMenu = () => {
     }
   }
 
-  function handleSelectQueueClick(){
-    window.location.href = ""
+  function handleSelectQueueClick() {
+    window.location.href = "/#/queue";
   }
 
   function handleNewQueueClick() {
@@ -90,7 +90,7 @@ const MainMenu = () => {
               <QueueInsideList>
                 {queueList.map((element, i) => {
                   return(
-                    <QueueItem onClick={handleSelectQueueClick} key={element.title} name={element.name} people={element.peopleOnIt}></QueueItem>
+                    <QueueItem onClick={handleSelectQueueClick} key={element.name} name={element.name} people={element.peopleOnIt}></QueueItem>
                   )
                 })}
               </QueueInsideList>
