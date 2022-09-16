@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Link } from 'react-router-dom'
 import {
   Container,
   Header,
@@ -16,7 +16,7 @@ import {
   UserButtonsContainer,
   Modal
 } from "./styles.ts";
-import QueueItem from '../../../components/custom/QueueItem/QueueItem';
+import QueueItem from '../../components/custom/QueueItem/QueueItem';
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import theme from "src/components/global/theme";
@@ -44,10 +44,6 @@ const MainMenu = () => {
     else {
       setIsCompany(true);
     }
-  }
-
-  function handleSelectQueueClick() {
-    window.location.href = "/#/queue";
   }
 
   function handleNewQueueClick() {
@@ -90,7 +86,10 @@ const MainMenu = () => {
               <QueueInsideList>
                 {queueList.map((element, i) => {
                   return(
-                    <QueueItem onClick={handleSelectQueueClick} key={element.name} name={element.name} people={element.peopleOnIt}></QueueItem>
+                    <Link to="/queue" key={element}>
+                      <QueueItem name={element.name} people={element.peopleOnIt}></QueueItem>
+                    </Link>
+                    
                   )
                 })}
               </QueueInsideList>

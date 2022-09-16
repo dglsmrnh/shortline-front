@@ -9,8 +9,8 @@ import {
 } from "@coreui/react";
 
 import theme from "src/components/global/theme";
-import iconPng from '../../../assets/images/iconpng.png';
-import avatar7 from '../../../assets/images/avatars/7.jpg';
+import iconPng from '../../assets/images/iconpng.png';
+import avatar7 from '../../assets/images/avatars/7.jpg';
 
 export const Container = styled(CContainer)`
   width: 100%;

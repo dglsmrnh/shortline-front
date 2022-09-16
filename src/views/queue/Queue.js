@@ -18,8 +18,8 @@ import {
   RightButton
 } from "./styles.ts";
 
-import ClientItem from '../../../components/custom/ClientItem/ClientItem';
-import RequestItem from "src/components/custom/RequestItem/RequestItem";
+import ClientItem from '../../components/custom/ClientItem/ClientItem';
+import RequestItem from "../../components/custom/RequestItem/RequestItem";
 
 const Queue = () => {
   let queueInfo = {
