@@ -4,18 +4,18 @@ import PropTypes from "prop-types";
 import {
   InQueueButton,
   Name,
-  NameContainer,
   ButtonContainer,
+  NameContainer,
   Amount,
   Frame
 } from "./styles.ts";
 
-const ClientItem = ({name, onClickCall, onClickRemove, people}) => {
-  ClientItem.propTypes = {
+const RequestItem = ({name, onClickAccept, onClickRefuse, people}) => {
+  RequestItem.propTypes = {
     name: PropTypes.string,
     people: PropTypes.number,
-    onClickRemove: PropTypes.func,
-    onClickCall: PropTypes.func
+    onClickRefuse: PropTypes.func,
+    onClickAccept: PropTypes.func
   }
 
   return(
@@ -25,11 +25,11 @@ const ClientItem = ({name, onClickCall, onClickRemove, people}) => {
         <Amount>{people} {people === 1 ? "pessoa" : "pessoas"} </Amount>
       </NameContainer>
       <ButtonContainer>
-        <InQueueButton color="light" onClick={onClickCall}><b>Chamar</b></InQueueButton>
-        <InQueueButton color="danger" onClick={onClickRemove}><b>Remover da fila</b></InQueueButton>
+        <InQueueButton color="light" onClick={onClickAccept}><b>Aceitar</b></InQueueButton>
+        <InQueueButton color="danger" onClick={onClickRefuse}><b>Recusar</b></InQueueButton>
       </ButtonContainer>
   </Frame>
 );
 }
 
-export default ClientItem;
+export default RequestItem;

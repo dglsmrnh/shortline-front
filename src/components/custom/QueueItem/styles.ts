@@ -44,7 +44,7 @@ export const AmountContainer = styled(CContainer)`
 export const Amount = styled(CCardText)`
   font-family: 'Poppins';
   font-size: 24px;
-  margin-right: 5px;
+  margin-left: 5px;
   align-items: center;
   margin-bottom: 0;
 `

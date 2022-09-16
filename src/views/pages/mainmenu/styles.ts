@@ -11,11 +11,6 @@ import iconPng from '../../../assets/images/iconpng.png';
 import avatar7 from '../../../assets/images/avatars/7.jpg';
 import { CChart } from "@coreui/react-chartjs";
 
-interface QueueProps {
-  title: string,
-  people: string
-}
-
 export const Container = styled(CContainer)`
   width: 100%;
   height: 100%;
@@ -106,6 +101,11 @@ export const QueueInsideList = styled(CContainer)`
   min-height: 69%;
   max-height: 69%;
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 export const ChartsContainer = styled(CContainer)`

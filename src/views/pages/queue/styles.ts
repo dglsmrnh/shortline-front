@@ -46,12 +46,23 @@ export const Title = styled(CCardText)`
   font-size: 40px;
 `;
 
+export const TitleContainer = styled(CContainer)`
+  margin-top: 13px;
+  margin-bottom: 20px;
+`;
+
 export const ListTitle = styled(CCardText)`
   text-align: center;
   font-family: 'Poppins';
   font-size: 24px;
-  margin-top: 13px;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
+`;
+
+export const SubTitle = styled(CCardText)`
+  text-align: center;
+  font-family: 'Poppins';
+  font-size: 14px;
+  opacity: 70%;
 `;
 
 export const QueueInsideList = styled(CContainer)`
@@ -65,9 +76,14 @@ export const QueueInsideList = styled(CContainer)`
   padding: 0px;
   align-items: center;
   flex-direction: column;
-  min-height: 87%;
+  height: 87%;
   max-height: 87%;
   overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 export const UserIcon = styled(CImage).attrs({
@@ -121,18 +137,26 @@ export const RequestsContainer = styled(CCard)`
   background-color: ${theme.colors.shapeBackground};
   width: 100%;
   height: 30vh;
+  padding: 10px;
   border-radius: 5px;
   border-style: solid;
   border-color: ${theme.colors.text};
   border-width: 1px;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
-export const CloseButton = styled(CButton)`
-
+export const Placeholder = styled(CCardText)`
+  text-align: center;
+  font-family: 'Poppins';
+  font-size: 24px;
+  margin-top: 13px;
+  margin-bottom: 25px;
+  opacity: 70%;
 `;
 
-export const DeleteButton = styled(CButton)`
-
+export const RightButton = styled(CButton)`
+  width: 100%;
+  height: 17%;
 `;

@@ -20,8 +20,8 @@ const QueueItem = (props) => {
     <Button onClick={props.onClick}>
       <Title>{props.name}</Title>
       <AmountContainer>
-        <Amount>{props.people}</Amount>
         <Icon></Icon>
+        <Amount>{props.people}</Amount>
       </AmountContainer>
     </Button>
   )
