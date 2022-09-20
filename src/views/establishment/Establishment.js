@@ -8,7 +8,8 @@ import {
   EnterButton,
   EstablishmentName,
   PeopleAmount,
-  WaitAmount
+  WaitAmount,
+  ClosingTime
 } from './styles.ts';
 
 const Establishment = () => {
@@ -29,6 +30,7 @@ const Establishment = () => {
           <EstablishmentName>Nome do estabelecimento</EstablishmentName>
           <PeopleAmount>14 pessoas</PeopleAmount>
           <WaitAmount>Cerca de 45 minutos de espera</WaitAmount>
+          <ClosingTime>Fecha as 23:00</ClosingTime>
         </QueueInfoContainer>
         <EnterButton onClick={enterQueue}>Entrar</EnterButton>
       </OuterCard>

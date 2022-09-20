@@ -9,6 +9,7 @@ import theme from "src/components/global/theme";
 export const Container = styled(CContainer)`
   height: 100%;
   width: 100%;
+  padding: 2px;
 `;
 
 export const OuterCard = styled(CCard)`
@@ -42,6 +43,15 @@ export const PeopleAmount = styled(CCardText)`
 `;
 
 export const WaitAmount = styled(CCardText)`
+  color: ${theme.colors.text};
+  opacity: 80%;
+  font-family: 'Poppins';
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 0px;
+`;
+
+export const ClosingTime = styled(CCardText)`
   color: ${theme.colors.text};
   opacity: 80%;
   font-family: 'Poppins';
