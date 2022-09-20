@@ -132,6 +132,15 @@ export const UserButtonsContainer = styled(CContainer)`
   align-items: center;
 `;
 
+export const QrCodeContainer = styled(UserButtonsContainer)`
+`;
+
+export const GenerateQrContainer = styled(CContainer)`
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+`;
+
 export const Button = styled(CButton).attrs({
   color: 'success'
 })`
@@ -142,5 +151,9 @@ export const Button = styled(CButton).attrs({
 `;
 
 export const Modal = styled(CModal)`
+  
+`;
 
+export const CardText = styled(CCardText)`
+  margin-bottom: 1px;
 `;

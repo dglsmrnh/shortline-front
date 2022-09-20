@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from 'react-router-dom'
 import {
   Container,
@@ -14,16 +14,51 @@ import {
   Chart,
   Button,
   UserButtonsContainer,
-  Modal
+  Modal,
+  QrCodeContainer,
+  GenerateQrContainer,
+  DownloadQrCodeButton,
+  CardText
 } from "./styles.ts";
+
+import { CButton, CCard, CCardBody, CCardTitle, CCardSubtitle,
+  CCardLink, CCardText
+} from "@coreui/react";
 import QueueItem from '../../components/custom/QueueItem/QueueItem';
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
+import { QRCodeCanvas } from "qrcode.react";
+ 
 import theme from "src/components/global/theme";
 import swal from "sweetalert";
 
 const MainMenu = () => {
 
+  const downloadQRCode = (e) => {
+    e.preventDefault();
+    let canvas = qrRef.current.querySelector("canvas");
+    let image = canvas.toDataURL("image/png");
+    let anchor = document.createElement("a");
+    anchor.href = image;
+    anchor.download = `qr-code.png`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  };
+  
+  const qrRef = useRef();
+
+  const qrcode = (
+    <QRCodeCanvas
+      id="qrCode"
+      value={JSON.stringify(() => reserveInfo)}
+      size={250}
+      level={"H"}
+      includeMargin = {true}
+    />
+   ); 
+  
+  let [isInfoEnable, setIsInfoEnable] = useState(false); //Vem do backend
   let [isCompany, setIsCompany] = useState(false); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
   let [queueList, setQueueList] = useState([ //Vem do backend
@@ -36,6 +71,13 @@ const MainMenu = () => {
         peopleOnIt: 0
     }
   ]);
+  let [reserveInfo, setReserveInfo] = useState(
+    {
+      name: "Giuseppe Kadura",
+      queue: 3,
+      posicao: 4
+    }
+  )
 
   function handleIconClick() {
     if(isCompany) {
@@ -49,6 +91,7 @@ const MainMenu = () => {
   function handleNewQueueClick() {
     setModalVisible(true);
   }
+
 
   const saveNewQueue = (newQueue) => {
     console.log(newQueue);
@@ -159,14 +202,37 @@ const MainMenu = () => {
           <Title>ShortLine</Title>
           <UserIcon onClick={handleIconClick}></UserIcon>
         </Header>
-          <UserButtonsContainer>
-            <Button>
-              Entrar em uma fila/ver a fila atual
-            </Button>
-            <Button>
-              Histórico
-            </Button>
-          </UserButtonsContainer>
+        
+        {isInfoEnable &&
+          <QrCodeContainer>
+            <CCard style={{ width: '18rem' }}>
+              <GenerateQrContainer ref={qrRef}>{qrcode}</GenerateQrContainer>
+              <CCardBody>
+                <CCardTitle>Reserva</CCardTitle>
+                <CCardSubtitle className="mb-2 text-medium-emphasis">Informações</CCardSubtitle>
+                
+                <CardText>Nome: {reserveInfo.name}</CardText>
+                <CardText>Fila: {reserveInfo.queue}</CardText>
+                <CardText>Posição: {reserveInfo.posicao}</CardText>
+                
+                <GenerateQrContainer class="mx-auto">
+                  <Button variant="outline" onClick={downloadQRCode}>
+                    Download QR code
+                  </Button>
+                </GenerateQrContainer>
+              </CCardBody>
+            </CCard>
+          </QrCodeContainer>
+        }
+
+        <UserButtonsContainer>
+          <Button onClick={() => setIsInfoEnable(true)}>
+            Entrar em uma fila/ver a fila atual
+          </Button>
+          <Button>
+            Histórico
+          </Button>
+        </UserButtonsContainer>
       </Container>
     </div>
     )
