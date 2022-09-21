@@ -14,7 +14,9 @@ export const Button = styled(CButton).attrs({
   background-color: ${theme.colors.primary};
   margin: 0px;
   width: 99%;
+  min-width: 99%;
   height: 75px;
+  min-height: 75px;
   border-radius: 5px;
   border-width: 1px;
   border-style: solid;
@@ -42,7 +44,7 @@ export const AmountContainer = styled(CContainer)`
 export const Amount = styled(CCardText)`
   font-family: 'Poppins';
   font-size: 24px;
-  margin-right: 5px;
+  margin-left: 5px;
   align-items: center;
   margin-bottom: 0;
 `
@@ -53,7 +55,6 @@ export const Icon = styled(CImage).attrs({
   width: '20'
 })`
 
-`
-;
+`;
 
 

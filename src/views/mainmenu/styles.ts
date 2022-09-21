@@ -7,14 +7,9 @@ import {
   CModal
 } from "@coreui/react";
 import theme from "src/components/global/theme";
-import iconPng from '../../../assets/images/iconpng.png';
-import avatar7 from '../../../assets/images/avatars/7.jpg';
+import iconPng from '../../assets/images/iconpng.png';
+import avatar7 from '../../assets/images/avatars/7.jpg';
 import { CChart } from "@coreui/react-chartjs";
-
-interface QueueProps {
-  title: string,
-  people: string
-}
 
 export const Container = styled(CContainer)`
   width: 100%;
@@ -105,7 +100,12 @@ export const QueueInsideList = styled(CContainer)`
   flex-direction: column;
   min-height: 69%;
   max-height: 69%;
-
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 export const ChartsContainer = styled(CContainer)`
@@ -132,6 +132,15 @@ export const UserButtonsContainer = styled(CContainer)`
   align-items: center;
 `;
 
+export const QrCodeContainer = styled(UserButtonsContainer)`
+`;
+
+export const GenerateQrContainer = styled(CContainer)`
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+`;
+
 export const Button = styled(CButton).attrs({
   color: 'success'
 })`
@@ -142,5 +151,9 @@ export const Button = styled(CButton).attrs({
 `;
 
 export const Modal = styled(CModal)`
+  
+`;
 
+export const CardText = styled(CCardText)`
+  margin-bottom: 1px;
 `;
