@@ -43,7 +43,8 @@
     "redux": "4.2.0",
     "simplebar-react": "^2.4.1",
     "styled-components": "^5.3.5",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "@googlemaps/js-api-loader" : "^1.14.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
