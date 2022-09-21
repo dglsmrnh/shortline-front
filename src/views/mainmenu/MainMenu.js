@@ -117,7 +117,7 @@ const MainMenu = () => {
   if(isCompany) {
     return(
       <div>
-        <Container>
+        <Container style={{backgroundColor:"#fff"}}>
           <Header>
             <MainIcon></MainIcon>
             <Title>ShortLine</Title>
@@ -196,7 +196,7 @@ const MainMenu = () => {
   else {
     return(
       <div>
-      <Container>
+      <Container style={{backgroundColor:"#fff"}}>
         <Header>
           <MainIcon ></MainIcon>
           <Title>ShortLine</Title>

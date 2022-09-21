@@ -17,6 +17,8 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
+import logo from '../../../assets/images/logoV2.png'
+
 const Login = () => { 
   
   const [visibleAlert, setAlert] = useState(false);
@@ -29,6 +31,9 @@ const Login = () => {
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
+      <CRow className="justify-content-center">
+            <img src={logo} style={{maxWidth:"1000px"}}/>
+        </CRow>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
