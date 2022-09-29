@@ -21,10 +21,6 @@ const NewQueueModal = ({closeModal, saveNewQueue}) => {
     peopleOnIt: 0
   };
 
-  function handleNameChange(e) {
-    newQueue.name = e.target.value;
-  }
-
   function handleMaxAmountChange(e) {
     newQueue.maxAmount = e.target.value;
   }
@@ -51,10 +47,6 @@ const NewQueueModal = ({closeModal, saveNewQueue}) => {
           Nova fila
       </ModalHeader>
       <ModalBody>
-        <Form>
-          <FormLabel>Nome</FormLabel>
-          <Input onChange={(e) => handleNameChange(e)} type="Text" placeholder="Nova Fila"></Input>
-        </Form>
         <Form>
           <FormLabel>Tamanho máximo</FormLabel>
           <Input onChange={(e) => handleMaxAmountChange(e)} type="Number"></Input>

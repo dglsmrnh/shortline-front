@@ -2,10 +2,6 @@ import React, { useState } from "react";
 
 import {
   Container,
-  Header,
-  MainIcon,
-  Title,
-  UserIcon,
   TitleContainer,
   ListTitle,
   SubTitle,
@@ -93,11 +89,6 @@ const Queue = () => {
 
   return(
     <Container>
-      <Header>
-        <MainIcon></MainIcon>
-        <Title>ShortLine</Title>
-        <UserIcon></UserIcon>
-      </Header>
       <Body>
         <QueueContainer>
           <TitleContainer>
