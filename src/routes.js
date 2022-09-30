@@ -10,6 +10,9 @@ const Home = React.lazy(() => import('./views/mainmenu/MainMenu'))
 //Queue
 const Queue = React.lazy(() => import('./views/queue/Queue'))
 
+//User
+const User = React.lazy(() => import('./views/user/EditUser'))
+
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -59,7 +62,8 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/home', name: 'home', element: Home },
-  { path: '/queue', name: 'queue', element: Queue },
+  { path: '/queue', name: 'Queue', element: Queue },
+  { path: '/edit', name: 'User', element: User },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
