@@ -17,28 +17,10 @@ const NewQueueModal = ({closeModal, saveNewQueue}) => {
     saveNewQueue: PropTypes.func
   }
 
-  let newQueue = {
-    peopleOnIt: 0
-  };
+  let maxAmount = 0;
 
   function handleMaxAmountChange(e) {
-    newQueue.maxAmount = e.target.value;
-  }
-
-  function handleOpeningDateChange(e) {
-    newQueue.openingDate = e.target.value;
-  }
-
-  function handleOpeningTimeChange(e) {
-    newQueue.openingTime = e.target.value;
-  }
-
-  function handleClosingDateChange(e) {
-    newQueue.closingDate = e.target.value;
-  }
-
-  function handleClosingTimeChange(e) {
-    newQueue.closingTime = e.target.value;
+    maxAmount = e.target.value;
   }
 
   return(
@@ -51,26 +33,10 @@ const NewQueueModal = ({closeModal, saveNewQueue}) => {
           <FormLabel>Tamanho máximo</FormLabel>
           <Input onChange={(e) => handleMaxAmountChange(e)} type="Number"></Input>
         </Form>
-        <Form>
-          <FormLabel>Data de abertura</FormLabel>
-          <Input onChange={(e) => handleOpeningDateChange(e)} type="Date" defaultValue={Date.now}></Input>
-        </Form>
-        <Form>
-          <FormLabel>Hora de abertura</FormLabel>
-          <Input onChange={(e) => handleOpeningTimeChange(e)} type="Time" defaultValue={Date.now}></Input>
-        </Form>
-        <Form>
-          <FormLabel>Data de fechamento</FormLabel>
-          <Input onChange={(e) => handleClosingDateChange(e)} type="Date" defaultValue={Date.now}></Input>
-        </Form>
-        <Form>
-          <FormLabel>Hora de fechamento</FormLabel>
-          <Input onChange={(e) => handleClosingTimeChange(e)} type="Time" defaultValue={Date.now}></Input>
-        </Form>
       </ModalBody>
       <ModalFooter>
         <ModalButton onClick={closeModal} color="failed">Cancelar</ModalButton>
-        <ModalButton onClick={() => saveNewQueue(newQueue)} color="success">Salvar</ModalButton>
+        <ModalButton onClick={() => saveNewQueue(maxAmount)} color="success">Salvar</ModalButton>
       </ModalFooter>
     </div>
   )

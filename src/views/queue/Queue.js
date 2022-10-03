@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
 import {
-  Container,
   TitleContainer,
   ListTitle,
   SubTitle,
   QueueInsideList,
-  Body,
   QueueContainer,
   RightSideContainer,
   RequestsContainer,
@@ -14,14 +12,26 @@ import {
   RightButton
 } from "./styles.ts";
 
+import {
+  CContainer,
+  CImage,
+  CCardText,
+  CCard,
+  CButton,
+  CCardHeader,
+  CCardTitle,
+  CCardSubtitle
+} from "@coreui/react";
+
+import theme from "src/components/global/theme";
+import iconPng from '../../assets/images/iconpng.png';
+import avatar7 from '../../assets/images/avatars/7.jpg';
+
 import ClientItem from '../../components/custom/ClientItem/ClientItem';
 import RequestItem from "../../components/custom/RequestItem/RequestItem";
 
 const Queue = () => {
-  let queueInfo = {
-    opening: new Date('2022-09-16T15:30:00'),
-    closing: new Date('2022-09-16T16:30:00')
-  };
+
   let [clientList, setClientList] = useState([
     {
       name: "Maria",
@@ -88,23 +98,23 @@ const Queue = () => {
   }
 
   return(
-    <Container>
-      <Body>
-        <QueueContainer>
-          <TitleContainer>
-            <ListTitle>{"{Nome da fila}"}</ListTitle>
-            <SubTitle>{queueInfo.opening.toLocaleString("pt-BR")} - {queueInfo.closing.toLocaleString("pt-BR")}</SubTitle>
-          </TitleContainer>
-            <QueueInsideList>
-              {
-                clientList.length > 0 ? clientList.map((element, i) => {
-                  return(
-                    <ClientItem onClickRemove={() => removeClientFromQueue(element)} onClickCall={() => callClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
-                  )
-                }) : <Placeholder>Fila vazia</Placeholder>
-              }
-            </QueueInsideList>
-        </QueueContainer>
+    <CContainer style={{width: '100%', height: '100%'}}>
+      <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+        <CCard style={{width: '42vw', height: '60vh', display: 'flex', flexDirection: 'column'}}>
+          <CCardHeader>
+            <CCardTitle>Minha fila</CCardTitle>
+            <CCardSubtitle>Há {clientList.length + (clientList.length === 1 ? " pessoa na fila" : " pessoas na fila")} </CCardSubtitle>
+          </CCardHeader>
+          <QueueInsideList>
+            {
+              clientList.length > 0 ? clientList.map((element, i) => {
+                return(
+                  <ClientItem onClickRemove={() => removeClientFromQueue(element)} onClickCall={() => callClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
+                )
+              }) : <Placeholder>Fila vazia</Placeholder>
+            }
+          </QueueInsideList>
+        </CCard>
         <RightSideContainer>
           <RequestsContainer>
             <ListTitle>Requisições</ListTitle>
@@ -121,8 +131,8 @@ const Queue = () => {
           <RightButton color="light">Fechar fila</RightButton>
           <RightButton color="danger">Deletar fila</RightButton>
         </RightSideContainer>
-      </Body>
-    </Container>
+      </CContainer>
+    </CContainer>
   )
 }
 

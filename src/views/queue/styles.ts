@@ -17,21 +17,6 @@ export const Container = styled(CContainer)`
   height: 100%;
 `;
 
-export const Header = styled(CContainer)`
-  background-color: ${theme.colors.primary};
-  width: 100%;
-  padding: 25px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-color: ${theme.colors.text};
-  border-width: 1px;
-  border-bottom: solid;
-  border-radius: 5px;
-  margin-bottom: 77px;
-`;
-
 export const MainIcon = styled(CImage).attrs({
   src: iconPng,
   width: "100",

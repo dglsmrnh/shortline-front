@@ -1,14 +1,4 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import {
-  Header,
-  MainIcon,
-  Title,
-  UserIcon,
-  Button,
-  UserButtonsContainer,
-  Modal,
-} from "./styles.ts";
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import theme from "src/components/global/theme";
@@ -16,16 +6,14 @@ import swal from "sweetalert";
 
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
-import { CContainer, CButton, CCard, CCardBody, CCardHeader, CCardText, CCardTitle } from "@coreui/react";
+import { CModal, CContainer, CButton, CCard, CCardBody, CCardHeader, CCardText, CCardTitle } from "@coreui/react";
 import { CChart } from "@coreui/react-chartjs";
 
 const MainMenu = () => {
 
   let [isCompany, setIsCompany] = useState(false); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
-  let [activeQueue, setActiveQueue] = useState(false);
-
-  const queuePeopleAmount = 5;
+  let [queue, setQueue] = useState({peopleAmount: 0, active: false});
 
   function handleIconClick() {
     if(isCompany) {
@@ -37,12 +25,30 @@ const MainMenu = () => {
   }
 
   function handleNewQueueClick() {
-    setActiveQueue(true);
     setModalVisible(true);
   }
 
+  function handleManageQueueClick() {
+    window.location.href = '/#/queue';
+  }
+
   function handleCloseQueueClick() {
-    setActiveQueue(false);
+    let tempQueue = queue;
+    tempQueue.active = false;
+    setQueue(tempQueue);
+  }
+
+  const saveNewQueue = (maxAmount) => {
+    if(maxAmount <= 0 || !maxAmount) {
+      swal("Erro", "Insira um tamanho máximo válido", "error");
+    }
+    else {
+      setModalVisible(false);
+      let tempQueue = queue;
+      tempQueue.maxAmount = maxAmount;
+      tempQueue.active = true;
+      setQueue(tempQueue);
+    }
   }
 
   if(isCompany) {
@@ -52,18 +58,20 @@ const MainMenu = () => {
           <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
             <CCard style={{width: '45%'}}>
               <CCardHeader style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                <CIcon style={{marginRight: '10px'}} icon={cilHamburgerMenu} height="36" width="36" size="custom-size"></CIcon>
+                <CIcon style={{marginRight: '10px'}} icon={cilHamburgerMenu} height={36} width={36} size="custom-size"></CIcon>
                 <CCardTitle style={{margin: '0px', fontFamily: 'Poppins', fontSize: '24px'}}>Minha fila</CCardTitle>
               </CCardHeader>
               <CCardBody style={{paddingLeft: '30px', paddingRight: '30px', paddingTop: '20px', paddingBottom: '20px'}}>
-                <CCardText style={{fontSize: '20px', marginBottom: '5px'}}>• Sua fila está <b>{activeQueue ? "aberta" : "fechada"}</b></CCardText>
-                <CCardText style={{marginLeft: '15px', fontSize: '14px', opacity: '0.7'}}>{activeQueue ? ("Há " + queuePeopleAmount + (queuePeopleAmount > 1 ? " pessoas na fila" : " pessoa na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
+                <CCardText style={{fontSize: '20px', marginBottom: '5px'}}>• Sua fila está <b>{queue.active ? "aberta" : "fechada"}</b></CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("Há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " pessoas na fila" : " pessoa na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("A capacidade máxima é de " + queue.maxAmount) : ""}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queue.active && queue.peopleAmount >= 1) ? ("Ainda há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " pessoas na fila" : " pessoa na fila")) : ""}</CCardText>
               </CCardBody>
-              {!activeQueue ?
-              <CButton style={{margin: '10px'}} color='success' onClick={handleNewQueueClick}>Abrir fila</CButton> :
+              {!queue.active ?
+              <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleNewQueueClick}>Abrir fila</CButton> :
               <CCard style={{borderColor: '#FFF'}}>
-                <CButton style={{margin: '10px'}} color='success'>Escanear QRCode</CButton>
-                <Link style={{display: 'inline-block'}} to="/queue"><CButton style={{margin: '10px'}} color='danger' onClick={handleCloseQueueClick}>Fechar fila</CButton></Link>
+                <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleManageQueueClick}>Gerenciar fila</CButton>
+                <CButton style={{height: "6vh", margin: '10px'}} color='danger' onClick={handleCloseQueueClick}>Fechar fila</CButton>
               </CCard>
               }
             </CCard>
@@ -116,10 +124,10 @@ const MainMenu = () => {
               </CCardBody>
             </CCard>
           </CContainer>
-          <Modal visible={modalVisible} onClose={() => setModalVisible(false)}>
-            <NewQueueModal closeModal={() => setModalVisible(false)}>
+          <CModal visible={modalVisible} onClose={() => setModalVisible(false)}>
+            <NewQueueModal saveNewQueue={saveNewQueue} closeModal={() => setModalVisible(false)}>
             </NewQueueModal>
-          </Modal>
+          </CModal>
         </CContainer>
       </div>
     )
@@ -127,20 +135,15 @@ const MainMenu = () => {
   else {
     return(
       <div>
-      <CContainer style={{  width: '100%', height: '100%', maxWidth: '1000px'}}>
-        <Header>
-          <MainIcon ></MainIcon>
-          <Title>ShortLine</Title>
-          <UserIcon onClick={handleIconClick}></UserIcon>
-        </Header>
-          <UserButtonsContainer>
-            <Button>
+      <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
+          <CContainer onClick={handleIconClick} style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <CButton color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Entrar em uma fila/ver a fila atual
-            </Button>
-            <Button>
+            </CButton>
+            <CButton color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Histórico
-            </Button>
-          </UserButtonsContainer>
+            </CButton>
+          </CContainer>
       </CContainer>
     </div>
     )
@@ -148,4 +151,4 @@ const MainMenu = () => {
 
 }
 
-export default MainMenu
+export default MainMenu;
