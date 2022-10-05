@@ -31,24 +31,6 @@ export const NameContainer = styled(CContainer)`
   align-items: center;
 `;
 
-export const Name = styled(CCardText)`
-  font-family: 'Poppins';
-  font-size: 24px;
-  padding-left: 12px;
-  width: 80%;
-  align-items: center;
-  margin-bottom: 0;
-  text-align: start;
-  font-weight: bold;
-`;
-
-export const Amount = styled(CCardText)`
-  font-family: 'Poppins';
-  font-size: 13px;
-  opacity: 70%;
-  padding-left: 14px;
-`;
-
 export const ButtonContainer = styled(CContainer)`
   display: flex;
   flex-direction: row;

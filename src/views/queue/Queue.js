@@ -20,7 +20,8 @@ import {
   CButton,
   CCardHeader,
   CCardTitle,
-  CCardSubtitle
+  CCardSubtitle,
+  CCardBody
 } from "@coreui/react";
 
 import theme from "src/components/global/theme";
@@ -29,6 +30,8 @@ import avatar7 from '../../assets/images/avatars/7.jpg';
 
 import ClientItem from '../../components/custom/ClientItem/ClientItem';
 import RequestItem from "../../components/custom/RequestItem/RequestItem";
+import { CChartLine } from "@coreui/react-chartjs";
+import swal from "sweetalert";
 
 const Queue = () => {
 
@@ -66,12 +69,25 @@ const Queue = () => {
   ])
 
   function removeClientFromQueue(element) {
-    if(clientList.length === 1) {
-      setClientList([]);
-    }
-    else {
-      setClientList(clientList.filter(value => value !== element));
-    }
+    swal({
+      title: "Aviso",
+      text: "Tem certeza que quer remover este grupo?",
+      icon: "warning",
+      buttons: [
+        "Sim, remover",
+        "Cancelar"
+      ],
+      dangerMode: true
+    }).then(function(isConfirm) {
+      if(!isConfirm) {
+        if(clientList.length === 1) {
+          setClientList([]);
+        }
+        else {
+          setClientList(clientList.filter(value => value !== element));
+        }
+      }
+    })
   }
 
   function callClientFromQueue(element) {
@@ -84,12 +100,25 @@ const Queue = () => {
   }
 
   function removeClientRequest(element) {
-    if(waitingList.length === 1) {
-      setWaitingList([]);
-    }
-    else {
-      setWaitingList(waitingList.filter(value => value !== element));
-    }
+    swal({
+      title: "Aviso",
+      text: "Tem certeza que quer remover este grupo?",
+      icon: "warning",
+      buttons: [
+        "Sim, remover",
+        "Cancelar"
+      ],
+      dangerMode: true
+    }).then(function(isConfirm) {
+      if(isConfirm) {
+        if(waitingList.length === 1) {
+          setWaitingList([]);
+        }
+        else {
+          setWaitingList(waitingList.filter(value => value !== element));
+        }
+      }
+    })
   }
 
   function acceptClientRequest(element) {
@@ -102,18 +131,18 @@ const Queue = () => {
       <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
         <CCard style={{width: '42vw', height: '60vh', display: 'flex', flexDirection: 'column'}}>
           <CCardHeader>
-            <CCardTitle>Minha fila</CCardTitle>
-            <CCardSubtitle>Há {clientList.length + (clientList.length === 1 ? " pessoa na fila" : " pessoas na fila")} </CCardSubtitle>
+            <CCardTitle style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>Minha fila</CCardTitle>
+            <CCardSubtitle>Há {clientList.length + (clientList.length === 1 ? " grupo na fila" : " grupos na fila")} </CCardSubtitle>
           </CCardHeader>
-          <QueueInsideList>
+          <CCardBody style={{overflow: "scroll", paddingTop: "0px"}}>
             {
               clientList.length > 0 ? clientList.map((element, i) => {
                 return(
-                  <ClientItem onClickRemove={() => removeClientFromQueue(element)} onClickCall={() => callClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
+                  <ClientItem onClickRemove={() => removeClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
                 )
-              }) : <Placeholder>Fila vazia</Placeholder>
+              }) : <CCardText>Fila vazia</CCardText>
             }
-          </QueueInsideList>
+          </CCardBody>
         </CCard>
         <RightSideContainer>
           <RequestsContainer>
@@ -128,8 +157,6 @@ const Queue = () => {
               }
             </QueueInsideList>
           </RequestsContainer>
-          <RightButton color="light">Fechar fila</RightButton>
-          <RightButton color="danger">Deletar fila</RightButton>
         </RightSideContainer>
       </CContainer>
     </CContainer>

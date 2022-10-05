@@ -63,9 +63,9 @@ const MainMenu = () => {
               </CCardHeader>
               <CCardBody style={{paddingLeft: '30px', paddingRight: '30px', paddingTop: '20px', paddingBottom: '20px'}}>
                 <CCardText style={{fontSize: '20px', marginBottom: '5px'}}>• Sua fila está <b>{queue.active ? "aberta" : "fechada"}</b></CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("Há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " pessoas na fila" : " pessoa na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("A capacidade máxima é de " + queue.maxAmount) : ""}</CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queue.active && queue.peopleAmount >= 1) ? ("Ainda há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " pessoas na fila" : " pessoa na fila")) : ""}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("Há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("A capacidade máxima é de " + queue.maxAmount + " grupos") : ""}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queue.active && queue.peopleAmount >= 1) ? ("Ainda há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ""}</CCardText>
               </CCardBody>
               {!queue.active ?
               <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleNewQueueClick}>Abrir fila</CButton> :
