@@ -1,82 +1,219 @@
-import React from 'react'
-import { CCard, CCardBody, CCardHeader, CCol, CFormLabel, CFormRange, CRow } from '@coreui/react'
-import { DocsExample } from 'src/components'
+import React, {useState} from 'react'
+import {
+  CButton,
+  CCard,
+  CCardHeader,
+  CCardBody,
+  CCol,
+  CForm,
+  CFormInput,
+  CFormLabel,
+  CFormSelect,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilCalendar, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
+import Map from '../../components/custom/Map/Map';
 
 const Range = () => {
-  return (
-    <CRow>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>Informações do usuário</strong> <small></small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Create custom <code>&lt;input type=&#34;range&#34;&gt;</code> controls with{' '}
-              <code>&lt;CFormRange&gt;</code>.
-            </p>
-            <DocsExample href="forms/range">
-              <CFormLabel htmlFor="customRange1">Example range</CFormLabel>
-              <CFormRange id="customRange1" />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Range</strong> <small>Disabled</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Add the <code>disabled</code> boolean attribute on an input to give it a grayed out
-              appearance and remove pointer events.
-            </p>
-            <DocsExample href="forms/range#disabled">
-              <CFormLabel htmlFor="disabledRange">Disabled range</CFormLabel>
-              <CFormRange id="disabledRange" disabled />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Range</strong> <small>Min and max</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              Range inputs have implicit values for <code>min</code> and <code>max</code>—
-              <code>0</code> and <code>100</code>, respectively. You may specify new values for
-              those using the <code>min</code> and <code>max</code> attributes.
-            </p>
-            <DocsExample href="forms/range#min-and-max">
-              <CFormLabel htmlFor="customRange2">Example range</CFormLabel>
-              <CFormRange min="0" max="5" defaultValue="3" id="customRange2" />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-      <CCol xs={12}>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <strong>React Range</strong> <small>Steps</small>
-          </CCardHeader>
-          <CCardBody>
-            <p className="text-medium-emphasis small">
-              By default, range inputs &#34;snap&#34; to integer values. To change this, you can
-              specify a <code>step</code> value. In the example below, we double the number of steps
-              by using <code>step=&#34;0.5&#34;</code>.
-            </p>
-            <DocsExample href="forms/range#steps">
-              <CFormLabel htmlFor="customRange3">Example range</CFormLabel>
-              <CFormRange min="0" max="5" step="0.5" defaultValue="3" id="customRange3" />
-            </DocsExample>
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
-  )
+
+  const isCompany = sessionStorage.getItem("userType");
+  const [validated, setValidated] = useState(false);
+
+  function handleSubmit(e) {
+    const data = e.currentTarget;
+
+    if(data.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();      
+    }
+    setValidated(true);
+  }
+
+  if(isCompany !== 'S'){
+    return (
+      <CRow className="justify-content-center">
+        <CCol md={9} lg={7} xl={6}>
+          <CCard className="mx-4">
+            <CCardHeader>
+              <strong>Informações do usuário</strong>
+            </CCardHeader>
+            <CCardBody className="p-4">                
+            <CForm className="needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <CFormInput plainText placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
+              </div>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilUser} />
+                </CInputGroupText>
+                <CFormInput placeholder="Razão social" autoComplete="username" required feedbackInvalid="Por favor, informe a razão social da empresa."/>
+              </CInputGroup>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilUser} />
+                </CInputGroupText>
+                <CFormInput placeholder="Nome fantasia" autoComplete="username" required feedbackInvalid="Por favor, informe o nome fantasia."/>
+              </CInputGroup>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>@</CInputGroupText>
+                <CFormInput type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
+              </CInputGroup>
+              <div className="mb-3">
+                <CFormInput plainText placeholder="CNPJ" autoComplete="email" required feedbackInvalid="Por favor, informe seu CNPJ."/>
+              </div>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilPhone} />
+                </CInputGroupText>
+                <CFormInput placeholder="Telefone" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
+              </CInputGroup>                        
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilLockLocked} />
+                </CInputGroupText>
+                <CFormInput
+                  type="password"
+                  placeholder="Senha"
+                  autoComplete="new-password"
+                  required
+                  feedbackInvalid="Por favor, informe uma sonha."
+                />
+              </CInputGroup>
+              <CInputGroup className="mb-4">
+                <CInputGroupText>
+                  <CIcon icon={cilLockLocked} />
+                </CInputGroupText>
+                <CFormInput
+                  type="password"
+                  placeholder="Repita a senha"
+                  autoComplete="new-password"
+                  required
+                  feedbackInvalid="Por favor, repita a senha corretamente."
+                />
+              </CInputGroup>
+              <div className="mb-3">
+                <CFormLabel htmlFor="formFile">Selecione uma imagem de perfil</CFormLabel>
+                <CFormInput type="file" id="formFile"/>
+              </div>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilMap} />
+                </CInputGroupText>
+                <CFormInput id="map-autocomplete" placeholder="Selecione o seu endereço" autoComplete="username" required feedbackInvalid="Por favor, informe um endereço."/>
+              </CInputGroup>
+              <div className="mb-3">
+                <Map id="map" height="400px"></Map>
+              </div>
+              <div className="d-grid">
+                <CButton color="success" type="submit">Confirmar edição</CButton>
+              </div>
+              </CForm>                                   
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    )
+  }
+  else {
+    return (
+      <CRow className="justify-content-center">
+            <CCol md={9} lg={7} xl={6}>
+              <CCard className="mx-4">
+                <CCardHeader>
+                  <strong>Informações do usuário</strong>
+                </CCardHeader>
+                <CCardBody className="p-4">                              
+                  <CForm className="needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
+                    <div className='mb-3'>
+                      <CFormInput plainText placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
+                    </div>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilUser} />
+                      </CInputGroupText>
+                      <CFormInput placeholder="Nome" autoComplete="username" required feedbackInvalid="Por favor, informe seu nome."/>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilUser} />
+                      </CInputGroupText>
+                      <CFormInput placeholder="Sobrenome" autoComplete="username" required feedbackInvalid="Por favor, informe seu sobrenome."/>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>@</CInputGroupText>
+                      <CFormInput type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
+                    </CInputGroup>
+                    <div className='mb-3'>
+                      <CFormInput plainText placeholder="CPF" autoComplete="email" required feedbackInvalid="Por favor, informe seu CPF."/>
+                    </div>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilCalendar} />
+                      </CInputGroupText>
+                      <CFormInput type="date" placeholder="Data de Nascimento" autoComplete="email" required feedbackInvalid="Por favor, informe sua data de nascimento."/>
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                        <CIcon icon={cilPhone} />
+                      </CInputGroupText>
+                      <CFormInput placeholder="Celular" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
+                    </CInputGroup>
+                    <div className="mb-3">
+                      <CFormLabel className="fw-bold">Identidade de gênero</CFormLabel>                    
+                      <CFormSelect 
+                        aria-label="Identidade de gênero"
+                        required
+                        feedbackInvalid="Por favor, informe sua identidade de gênero."
+                        options={[
+                          { label: 'Homem cisgênero', value: '1' },
+                          { label: 'Mulher cisgênero', value: '2' },
+                          { label: 'Homem transgênero', value: '3' },
+                          { label: 'Mulher transgênero', value: '4' },
+                          { label: 'Não binário', value: '5' },
+                        ]}
+                      />
+                    </div>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilLockLocked} />
+                      </CInputGroupText>
+                      <CFormInput
+                        type="password"
+                        placeholder="Senha"
+                        autoComplete="new-password"
+                        required
+                        feedbackInvalid="Por favor, informe uma sonha."
+                      />
+                    </CInputGroup>
+                    <CInputGroup className="mb-4">
+                      <CInputGroupText>
+                        <CIcon icon={cilLockLocked} />
+                      </CInputGroupText>
+                      <CFormInput
+                        type="password"
+                        placeholder="Repita a senha"
+                        autoComplete="new-password"
+                        required
+                        feedbackInvalid="Por favor, repita a senha corretamente."
+                      />
+                    </CInputGroup>
+                    <div className="mb-3">
+                      <CFormLabel htmlFor="formFile">Selecione uma imagem de perfil</CFormLabel>
+                      <CFormInput type="file" id="formFile"/>
+                    </div>
+                    <div className="d-grid">
+                      <CButton color="success" type="submit">Confirmar edição</CButton>
+                    </div>
+                    </CForm>  
+                </CCardBody>
+              </CCard>
+            </CCol>
+          </CRow>
+    )
+  }
 }
 
 export default Range
