@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 
 import {
-  TitleContainer,
-  ListTitle,
-  SubTitle,
-  QueueInsideList,
-  QueueContainer,
-  RightSideContainer,
-  RequestsContainer,
-  Placeholder,
-  RightButton
-} from "./styles.ts";
-
-import {
   CContainer,
-  CImage,
   CCardText,
   CCard,
   CButton,
@@ -24,13 +11,8 @@ import {
   CCardBody
 } from "@coreui/react";
 
-import theme from "src/components/global/theme";
-import iconPng from '../../assets/images/iconpng.png';
-import avatar7 from '../../assets/images/avatars/7.jpg';
-
 import ClientItem from '../../components/custom/ClientItem/ClientItem';
 import RequestItem from "../../components/custom/RequestItem/RequestItem";
-import { CChartLine } from "@coreui/react-chartjs";
 import swal from "sweetalert";
 
 const Queue = () => {
@@ -53,6 +35,7 @@ const Queue = () => {
       peopleAmount: 1
     }
   ]);
+
   let [waitingList, setWaitingList] = useState([
     {
       name: "Julia",
@@ -67,6 +50,8 @@ const Queue = () => {
       peopleAmount: 4
     }
   ])
+
+  let [isActive, setIsActive] = useState(true);
 
   function removeClientFromQueue(element) {
     swal({
@@ -90,15 +75,6 @@ const Queue = () => {
     })
   }
 
-  function callClientFromQueue(element) {
-    if(clientList.length === 1) {
-      setClientList([]);
-    }
-    else {
-      setClientList(clientList.filter(value => value !== element));
-    }
-  }
-
   function removeClientRequest(element) {
     swal({
       title: "Aviso",
@@ -110,7 +86,7 @@ const Queue = () => {
       ],
       dangerMode: true
     }).then(function(isConfirm) {
-      if(isConfirm) {
+      if(!isConfirm) {
         if(waitingList.length === 1) {
           setWaitingList([]);
         }
@@ -124,6 +100,18 @@ const Queue = () => {
   function acceptClientRequest(element) {
     setWaitingList(waitingList.filter(value => value !== element));
     setClientList([...clientList,element]);
+  }
+
+  function redirectScan() {
+
+  }
+
+  function closeQueue() {
+    setIsActive(false);
+  }
+
+  function openQueue() {
+    setIsActive(true);
   }
 
   return(
@@ -140,24 +128,33 @@ const Queue = () => {
                 return(
                   <ClientItem onClickRemove={() => removeClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
                 )
-              }) : <CCardText>Fila vazia</CCardText>
+              }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Fila vazia</CCardText>
             }
           </CCardBody>
         </CCard>
-        <RightSideContainer>
-          <RequestsContainer>
-            <ListTitle>Requisições</ListTitle>
-            <QueueInsideList>
+        <CContainer style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", width: "42vw", height: "60vh"}}>
+          <CCard style={{width: "100%", height: "30vh"}}>
+            <CCardHeader>
+              {}
+              <CCardTitle style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>Requisições</CCardTitle>
+              <CCardSubtitle>Há {waitingList.length + (waitingList.length === 1 ? " grupo solicitando entrada" : " grupos solicitando entrada")} </CCardSubtitle>
+            </CCardHeader>
+            <CCardBody style={{overflow: "scroll", paddingTop: "0px"}}>
               {
                 waitingList.length > 0 ? waitingList.map((element) => {
                   return(
                     <RequestItem onClickRefuse={() => removeClientRequest(element)} onClickAccept={() => acceptClientRequest(element)} key={element} name={element.name} people={element.peopleAmount}></RequestItem>
                   )
-                }) : <Placeholder>Sem requisições</Placeholder>
+                }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Sem requisições</CCardText>
               }
-            </QueueInsideList>
-          </RequestsContainer>
-        </RightSideContainer>
+            </CCardBody>
+          </CCard>
+          <CButton style={{height: "6vh", width: "90%", alignItems: "flex-start"}} color="success" onClick={redirectScan}>Escanear QRCode</CButton>
+          {isActive ?
+          <CButton style={{height: "6vh", marginBottom: "20px", width: "90%", alignItems: "flex-start"}} color="danger" onClick={closeQueue}>Fechar fila</CButton> :
+          <CButton style={{height: "6vh", marginBottom: "20px", width: "90%", alignItems: "flex-start"}} color="outline" onClick={openQueue}>Abrir fila</CButton>
+        }
+        </CContainer>
       </CContainer>
     </CContainer>
   )
