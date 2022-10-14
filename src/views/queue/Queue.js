@@ -103,7 +103,7 @@ const Queue = () => {
   }
 
   function redirectScan() {
-
+    window.location.href = '/#/scan';
   }
 
   function closeQueue() {

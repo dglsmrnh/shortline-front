@@ -9,6 +9,7 @@ const Home = React.lazy(() => import('./views/mainmenu/MainMenu'))
 
 //Queue
 const Queue = React.lazy(() => import('./views/queue/Queue'))
+const Scan = React.lazy(() => import('./views/scan/Scan'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -60,6 +61,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/home', name: 'home', element: Home },
   { path: '/queue', name: 'queue', element: Queue },
+  { path: '/scan', name: 'scan', element: Scan },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
