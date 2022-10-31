@@ -1,36 +1,15 @@
-import React, { useState, useRef } from "react";
-import { Link } from 'react-router-dom'
-import {
-  Container,
-  Header,
-  MainIcon,
-  Title,
-  UserIcon,
-  Body,
-  QueueListContainer,
-  ListTitle,
-  QueueInsideList,
-  ChartsContainer,
-  Chart,
-  Button,
-  UserButtonsContainer,
-  Modal,
-  QrCodeContainer,
-  GenerateQrContainer,
-  DownloadQrCodeButton,
-  CardText
-} from "./styles.ts";
-
-import { CButton, CCard, CCardBody, CCardTitle, CCardSubtitle,
-  CCardLink, CCardText
-} from "@coreui/react";
-import QueueItem from '../../components/custom/QueueItem/QueueItem';
+import React, { useState } from "react";
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import { QRCodeCanvas } from "qrcode.react";
  
 import theme from "src/components/global/theme";
 import swal from "sweetalert";
+
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
+import { CModal, CContainer, CButton, CCard, CCardBody, CCardHeader, CCardText, CCardTitle } from "@coreui/react";
+import { CChart } from "@coreui/react-chartjs";
 
 const MainMenu = () => {
 
@@ -61,23 +40,7 @@ const MainMenu = () => {
   let [isInfoEnable, setIsInfoEnable] = useState(false); //Vem do backend
   let [isCompany, setIsCompany] = useState(false); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
-  let [queueList, setQueueList] = useState([ //Vem do backend
-      {
-        name: 'Fila 1',
-        peopleOnIt: 3
-    },
-      {
-        name: 'Fila 2',
-        peopleOnIt: 0
-    }
-  ]);
-  let [reserveInfo, setReserveInfo] = useState(
-    {
-      name: "Giuseppe Kadura",
-      queue: 3,
-      posicao: 4
-    }
-  )
+  let [queue, setQueue] = useState({peopleAmount: 0, active: false});
 
   function handleIconClick() {
     if(isCompany) {
@@ -92,152 +55,127 @@ const MainMenu = () => {
     setModalVisible(true);
   }
 
+  function handleManageQueueClick() {
+    window.location.href = '/#/queue';
+  }
 
-  const saveNewQueue = (newQueue) => {
-    console.log(newQueue);
-    if(!newQueue.name || newQueue.name.trim() === '') {
-      swal("Erro", "Insira um nome para a nova fila", "error");
-    }
-    else if(newQueue.maxAmount <= 0 || !newQueue.maxAmount) {
-      swal("Erro", "Insira uma quantidade máxima válida", "error");
-    }
-    else if(newQueue.openingDate < Date.now() || !newQueue.openingDate) {
-      swal("Erro", "Insira uma data de abertura válida", "error");
-    }
-    else if(newQueue.closingDate < Date.now() || !newQueue.closingDate || newQueue.closingDate < newQueue.openingDate) {
-      swal("Erro", "Insira uma data de fechamento válida", "error");
+  function handleCloseQueueClick() {
+    let tempQueue = queue;
+    tempQueue.active = false;
+    setQueue(tempQueue);
+  }
+
+  const saveNewQueue = (maxAmount) => {
+    if(maxAmount <= 0 || !maxAmount) {
+      swal("Erro", "Insira um tamanho máximo válido", "error");
     }
     else {
       setModalVisible(false);
-      setQueueList([...queueList, newQueue]);
+      let tempQueue = queue;
+      tempQueue.maxAmount = maxAmount;
+      tempQueue.active = true;
+      setQueue(tempQueue);
     }
-
   }
 
   if(isCompany) {
     return(
       <div>
-        <Container style={{backgroundColor:"#fff"}}>
-          <Header>
-            <MainIcon></MainIcon>
-            <Title>ShortLine</Title>
-            <UserIcon onClick={handleIconClick}></UserIcon>
-          </Header>
-          <Body>
-            <QueueListContainer>
-              <ListTitle>Minhas filas</ListTitle>
-              <QueueInsideList>
-                {queueList.map((element, i) => {
-                  return(
-                    <Link to="/queue" key={element}>
-                      <QueueItem name={element.name} people={element.peopleOnIt}></QueueItem>
-                    </Link>
-                    
-                  )
-                })}
-              </QueueInsideList>
-              <Button onClick={handleNewQueueClick}>Nova fila</Button>
-            </QueueListContainer>
-            <ChartsContainer>
-              <Chart
-                width={530}
-                height={300}
-                labels="Meses"
-                type="bar"
-                data={{
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                  datasets: [
-                    {
-                      label: 'Pessoas atendidas',
-                      backgroundColor: theme.colors.primaryLight,
-                      data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
-                    }
-                  ]
-                }}></Chart>
-              <Chart
-                width={530}
-                height={300}
-                type="bar"
-                data={{
-                  labels: ["Janeiro", "Fevereiro", "Março", "Abril"],
-                  datasets: [
-                    {
-                      label: 'Ótimo',
-                      backgroundColor: '#41B883',
-                      data: [40, 20, 80, 10],
-                    },
-                    {
-                      label: 'Bom',
-                      backgroundColor: '#E46651',
-                      data: [30, 50, 10, 60]
-                    },
-                    {
-                      label: 'Regular',
-                      backgroundColor: '#00D8FF',
-                      data: [40, 70, 10, 80]
-                    },
-                    {
-                      label: 'Ruim',
-                      backgroundColor: '#DD1B16',
-                      data: [10, 10, 10, 10]
-                    }
-                  ],
-                }}></Chart>
-            </ChartsContainer>
-          </Body>
-          <Modal visible={modalVisible} onClose={() => setModalVisible(false)}>
+        <CContainer style={{  width: '100%', height: '100%', maxWidth: '1000px'}}>
+          <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <CCard style={{width: '45%'}}>
+              <CCardHeader style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <CIcon style={{marginRight: '10px'}} icon={cilHamburgerMenu} height={36} width={36} size="custom-size"></CIcon>
+                <CCardTitle style={{margin: '0px', fontFamily: 'Poppins', fontSize: '24px'}}>Minha fila</CCardTitle>
+              </CCardHeader>
+              <CCardBody style={{paddingLeft: '30px', paddingRight: '30px', paddingTop: '20px', paddingBottom: '20px'}}>
+                <CCardText style={{fontSize: '20px', marginBottom: '5px'}}>• Sua fila está <b>{queue.active ? "aberta" : "fechada"}</b></CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("Há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("A capacidade máxima é de " + queue.maxAmount + " grupos") : ""}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queue.active && queue.peopleAmount >= 1) ? ("Ainda há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ""}</CCardText>
+              </CCardBody>
+              {!queue.active ?
+              <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleNewQueueClick}>Abrir fila</CButton> :
+              <CCard style={{borderColor: '#FFF'}}>
+                <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleManageQueueClick}>Gerenciar fila</CButton>
+                <CButton style={{height: "6vh", margin: '10px'}} color='danger' onClick={handleCloseQueueClick}>Fechar fila</CButton>
+              </CCard>
+              }
+            </CCard>
+            <CCard  style={{width: '45%'}}>
+              <CCardBody>
+                <CChart
+                  height={window.innerHeight * 0.22}
+                  width={window.innerWidth * 0.20}
+                  labels="Meses"
+                  type="bar"
+                  data={{
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                    datasets: [
+                      {
+                        label: 'Pessoas atendidas',
+                        backgroundColor: theme.colors.primaryLight,
+                        data: [40, 20, 12, 39, 10, 40, 39, 80, 40],
+                      }
+                    ]
+                  }}></CChart>
+                <CChart
+                  height={window.innerHeight * 0.22}
+                  width={window.innerWidth * 0.20}
+                  type="bar"
+                  data={{
+                    labels: ["Janeiro", "Fevereiro", "Março", "Abril"],
+                    datasets: [
+                      {
+                        label: 'Ótimo',
+                        backgroundColor: '#41B883',
+                        data: [40, 20, 80, 10],
+                      },
+                      {
+                        label: 'Bom',
+                        backgroundColor: '#E46651',
+                        data: [30, 50, 10, 60]
+                      },
+                      {
+                        label: 'Regular',
+                        backgroundColor: '#00D8FF',
+                        data: [40, 70, 10, 80]
+                      },
+                      {
+                        label: 'Ruim',
+                        backgroundColor: '#DD1B16',
+                        data: [10, 10, 10, 10]
+                      }
+                    ],
+                  }}></CChart>
+              </CCardBody>
+            </CCard>
+          </CContainer>
+          <CModal visible={modalVisible} onClose={() => setModalVisible(false)}>
             <NewQueueModal saveNewQueue={saveNewQueue} closeModal={() => setModalVisible(false)}>
             </NewQueueModal>
-          </Modal>
-        </Container>
+          </CModal>
+        </CContainer>
       </div>
     )
   }
   else {
     return(
       <div>
-      <Container style={{backgroundColor:"#fff"}}>
-        <Header>
-          <MainIcon ></MainIcon>
-          <Title>ShortLine</Title>
-          <UserIcon onClick={handleIconClick}></UserIcon>
-        </Header>
-        
-        {isInfoEnable &&
-          <QrCodeContainer>
-            <CCard style={{ width: '18rem' }}>
-              <GenerateQrContainer ref={qrRef}>{qrcode}</GenerateQrContainer>
-              <CCardBody>
-                <CCardTitle>Reserva</CCardTitle>
-                <CCardSubtitle className="mb-2 text-medium-emphasis">Informações</CCardSubtitle>
-                
-                <CardText>Nome: {reserveInfo.name}</CardText>
-                <CardText>Fila: {reserveInfo.queue}</CardText>
-                <CardText>Posição: {reserveInfo.posicao}</CardText>
-                
-                <GenerateQrContainer class="mx-auto">
-                  <Button variant="outline" onClick={downloadQRCode}>
-                    Download QR code
-                  </Button>
-                </GenerateQrContainer>
-              </CCardBody>
-            </CCard>
-          </QrCodeContainer>
-        }
-
-        <UserButtonsContainer>
-          <Button onClick={() => setIsInfoEnable(true)}>
-            Entrar em uma fila/ver a fila atual
-          </Button>
-          <Button>
-            Histórico
-          </Button>
-        </UserButtonsContainer>
-      </Container>
+      <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
+          <CContainer onClick={handleIconClick} style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <CButton color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
+              Entrar em uma fila/ver a fila atual
+            </CButton>
+            <CButton color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
+              Histórico
+            </CButton>
+          </CContainer>
+      </CContainer>
     </div>
     )
   }
 
 }
 
-export default MainMenu
+export default MainMenu;
