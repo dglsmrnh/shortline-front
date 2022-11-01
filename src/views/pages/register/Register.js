@@ -25,18 +25,43 @@ const Register = () => {
 
   const [validated, setValidated] = useState(false);
 
+  
   function handleChangeUser() {
     setValidated(false);
   }
 
   function handleSubmit(e) {
+    window.location.href = "";
+
     const data = e.currentTarget;
+    
+    let isCompany = false
+    if(data.cpf.value === null){
+      isCompany = true
+    }
+
+    const body = {
+      "username": data.username.value,
+      "password": data.password.value,
+      "type": "basic",
+      "key": "none",
+      "isCompany": isCompany 
+    }
 
     if(data.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();      
     }
     setValidated(true);
+
+    fetch("http://shortline-app.heroku.com/users", {
+      method: 'POST',
+      body: body
+    })
+    .then(() => {
+      window.location.href = "/home";
+    })
+    .catch(e => {}) //snackbar
   }
 
   return (
@@ -57,29 +82,29 @@ const Register = () => {
                           <CInputGroupText>
                             <CIcon icon={cilUser} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
+                          <CFormInput name='username' placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilUser} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Nome" autoComplete="username" required feedbackInvalid="Por favor, informe seu nome."/>
+                          <CFormInput name='nome' placeholder="Nome" autoComplete="username" required feedbackInvalid="Por favor, informe seu nome."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilUser} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Sobrenome" autoComplete="username" required feedbackInvalid="Por favor, informe seu sobrenome."/>
+                          <CFormInput name='sobrenome' placeholder="Sobrenome" autoComplete="username" required feedbackInvalid="Por favor, informe seu sobrenome."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>@</CInputGroupText>
-                          <CFormInput type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
+                          <CFormInput name='email' type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilBraille} />
                           </CInputGroupText>
-                          <CFormInput placeholder="CPF" autoComplete="email" required feedbackInvalid="Por favor, informe seu CPF."/>
+                          <CFormInput name='cpf' placeholder="CPF" autoComplete="email" required feedbackInvalid="Por favor, informe seu CPF."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
@@ -113,6 +138,7 @@ const Register = () => {
                             <CIcon icon={cilLockLocked} />
                           </CInputGroupText>
                           <CFormInput
+                            name='password'
                             type="password"
                             placeholder="Senha"
                             autoComplete="new-password"

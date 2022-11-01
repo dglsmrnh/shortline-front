@@ -6,6 +6,7 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 
 //Home
 const Home = React.lazy(() => import('./views/mainmenu/MainMenu'))
+const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 //Queue
 const Queue = React.lazy(() => import('./views/queue/Queue'))
@@ -58,9 +59,10 @@ const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', name: 'Home', element: Login },
   { path: '/home', name: 'home', element: Home },
   { path: '/queue', name: 'queue', element: Queue },
+  { path: '/mainmenu', name: 'mainmenu', element: Home },
   { path: '/scan', name: 'scan', element: Scan },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

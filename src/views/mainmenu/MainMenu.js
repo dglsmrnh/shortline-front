@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import { QRCodeCanvas } from "qrcode.react";
@@ -41,6 +41,14 @@ const MainMenu = () => {
   let [isCompany, setIsCompany] = useState(false); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
   let [queue, setQueue] = useState({peopleAmount: 0, active: false});
+  let [reserveInfo, setReserveInfo] = useState(
+    {
+      name: "Giuseppe Kadura",
+      queue: 3,
+      posicao: 4
+    }
+  )
+
 
   function handleIconClick() {
     if(isCompany) {

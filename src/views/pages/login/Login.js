@@ -26,6 +26,15 @@ const Login = () => {
   function handleAlert(e) {
     e.preventDefault();
     setAlert(true);
+
+    fetch("http://shortline-app.heroku.com/users/" + e.preventDefault.username.value, {
+      method: 'GET',
+      headers: {'Authorization' : 'Basic ' + btoa(e.preventDefault.username.value + ':' + e.preventDefault.password.value)}
+    })
+    .then(() => {
+      window.location.href = "/#/mainmenu";
+    })
+    .catch(e => {}) //snackbar
   }
 
   return (
@@ -49,7 +58,7 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Usuário" autoComplete="username" />
+                      <CFormInput name='username' placeholder="Usuário" autoComplete="username" />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
