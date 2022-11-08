@@ -1,7 +1,4 @@
-export const logo = [
-  '608 134',
-  `
-  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="100%" viewBox="0 0 1577 760" enable-background="new 0 0 1577 760" xml:space="preserve">
 <path fill="#FFFFFF" opacity="1.000000" stroke="none" 
 	d="
@@ -744,5 +741,3 @@ M605.718750,443.020813
 	C607.706848,441.157654 606.647339,442.160919 605.718750,443.020813 
 z"/>
 </svg>
-`,
-]
