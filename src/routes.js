@@ -12,6 +12,9 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Queue = React.lazy(() => import('./views/queue/Queue'))
 const Scan = React.lazy(() => import('./views/scan/Scan'))
 
+//Register
+const Edit = React.lazy(() => import('./views/user/EditUser'))
+
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -63,6 +66,7 @@ const routes = [
   { path: '/home', name: 'home', element: Home },
   { path: '/queue', name: 'queue', element: Queue },
   { path: '/mainmenu', name: 'mainmenu', element: Home },
+  { path: '/edit', name: 'Editar', element: Edit },
   { path: '/scan', name: 'scan', element: Scan },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
