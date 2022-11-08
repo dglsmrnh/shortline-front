@@ -24,19 +24,35 @@ const Login = () => {
   const [visibleAlert, setAlert] = useState(false);
 
   function handleAlert(e) {
-    e.preventDefault();
+    const data = e.preventDefault();
+    //setAlert(true);
+  }
 
-    window.location.href = "/#/mainmenu"
-    setAlert(true);
+  function handleSubmit(e) {
+    const data = e.currentTarget;
 
-    /*fetch("http://shortline-app.heroku.com/users/" + e.preventDefault.username.value, {
+    localStorage.setItem("username", data.username.value)
+    localStorage.setItem("password", data.password.value)
+    
+    e.preventDefault()
+    fetch("http://shortline-app.herokuapp.com/users/" + data.username.value, {
       method: 'GET',
-      headers: {'Authorization' : 'Basic ' + btoa(e.preventDefault.username.value + ':' + e.preventDefault.password.value)}
+      headers: {'Authorization' : 'Basic ' + btoa(data.username.value + ':' + data.password.value)}
     })
-    .then(() => {
-      window.location.href = "/#/mainmenu";
+    .then((res) => {
+      if(res.ok){
+        localStorage.setItem("username", data.username.value)
+        localStorage.setItem("password", data.password.value)
+        
+        res.json().then(json => {
+          localStorage.setItem("isCompany", json.isCompany)
+        });
+        window.location.href = "/#/mainmenu";
+      }
     })
-    .catch(e => {}) //snackbar */
+    .catch(e => {
+      console.log(e)
+    }) //snackbar */
   }
 
   return (
@@ -50,7 +66,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleSubmit}>
                     <h1>Login</h1>
                     <CAlert color="warning" visible={visibleAlert} onClose={() => setAlert(false)}>
                       Usuário ou senha inválidos.
@@ -67,6 +83,7 @@ const Login = () => {
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <CFormInput
+                        name='password'
                         type="password"
                         placeholder="Senha"
                         autoComplete="current-password"
@@ -74,7 +91,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="success" className="success px-4" onClick={handleAlert}>
+                        <CButton type='submit' color="success" className="success px-4">
                           Entrar
                         </CButton>
                       </CCol>
