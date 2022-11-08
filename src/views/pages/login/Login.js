@@ -25,22 +25,24 @@ const Login = () => {
 
   function handleAlert(e) {
     e.preventDefault();
+
+    window.location.href = "/#/mainmenu"
     setAlert(true);
 
-    fetch("http://shortline-app.heroku.com/users/" + e.preventDefault.username.value, {
+    /*fetch("http://shortline-app.heroku.com/users/" + e.preventDefault.username.value, {
       method: 'GET',
       headers: {'Authorization' : 'Basic ' + btoa(e.preventDefault.username.value + ':' + e.preventDefault.password.value)}
     })
     .then(() => {
       window.location.href = "/#/mainmenu";
     })
-    .catch(e => {}) //snackbar
+    .catch(e => {}) //snackbar */
   }
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
-      <CRow className="justify-content-center">
+        <CRow className="justify-content-center">
             <img src={logo} style={{maxWidth:"1000px"}} alt="Logo"/>
         </CRow>
         <CRow className="justify-content-center">

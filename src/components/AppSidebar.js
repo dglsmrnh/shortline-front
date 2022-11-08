@@ -24,7 +24,7 @@ const AppSidebar = () => {
     <CSidebar
       position="fixed"
       unfoldable={unfoldable}
-      visible={sidebarShow}
+      visible={false}
       onVisibleChange={(visible) => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}

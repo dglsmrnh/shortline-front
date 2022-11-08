@@ -61,6 +61,7 @@ const MainMenu = () => {
 
   function handleNewQueueClick() {
     setModalVisible(true);
+    
   }
 
   function handleManageQueueClick() {
@@ -82,7 +83,19 @@ const MainMenu = () => {
       let tempQueue = queue;
       tempQueue.maxAmount = maxAmount;
       tempQueue.active = true;
-      setQueue(tempQueue);
+
+      fetch("http://shortline-app.herokuapp.com/queues",{
+        method: 'POST',
+        headers: {'Authorization' : 'Basic ' + btoa(localStorage.getItem("username") + ':' + localStorage.getItem("password"))},
+        body: {
+          "maxSize": maxAmount,
+          "idCompany": localStorage.getItem("idCompany") 
+        }
+      }).then((res) => {
+        setQueue(tempQueue);
+      }).catch((e) => {
+        console.log(e)
+      })
     }
   }
 

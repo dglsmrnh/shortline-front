@@ -31,37 +31,63 @@ const Register = () => {
   }
 
   function handleSubmit(e) {
-    window.location.href = "";
-
     const data = e.currentTarget;
     
     let isCompany = false
-    if(data.cpf.value === null){
+    if(data?.cpf?.value === null){
       isCompany = true
     }
 
-    const body = {
-      "username": data.username.value,
-      "password": data.password.value,
-      "type": "basic",
-      "key": "none",
-      "isCompany": isCompany 
-    }
+    const body = JSON.stringify({
+      username: data.username?.value,
+      password: data.password?.value,
+      type: "basic",
+      key: "none",
+      isCompany: isCompany,
+      idUser: null,
+      addressNumber: data.address_number?.value,
+      latitude: data.latitude?.value,
+      longitude: data.longitude?.value, 
+      name: data.nome?.value,
+      postalCode: data.postal_code?.value 
+    })
 
     if(data.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();      
     }
+    e.preventDefault();
     setValidated(true);
 
-    fetch("http://shortline-app.heroku.com/users", {
-      method: 'POST',
-      body: body
-    })
-    .then(() => {
-      window.location.href = "/home";
-    })
-    .catch(e => {}) //snackbar
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    try{
+      fetch("http://shortline-app.herokuapp.com/users", {
+        method: 'POST',
+        body: body,
+        headers: myHeaders
+      })
+      .then(response => {
+        let location = response.headers.location + ""; 
+        if(isCompany){
+          let location = response.headers.location + ""; 
+          let id = location.split("/")[2];
+
+          fetch("http://shortline-app.heroku.com/users", {
+            method: 'POST',
+            body: body
+            })  
+        }
+        window.location.href = "/home";
+      })
+      .catch(e => {
+        console.log(e)
+      }).finally(() => {
+        console.log("oi");
+      }) //snackbar
+    } catch (e){
+      console.log(e);
+    }
   }
 
   return (
@@ -176,19 +202,19 @@ const Register = () => {
                           <CInputGroupText>
                             <CIcon icon={cilUser} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
+                          <CFormInput name='username' placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilUser} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Razão social" autoComplete="username" required feedbackInvalid="Por favor, informe a razão social da empresa."/>
+                          <CFormInput name='razao' placeholder="Razão social" autoComplete="username" required feedbackInvalid="Por favor, informe a razão social da empresa."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilUser} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Nome fantasia" autoComplete="username" required feedbackInvalid="Por favor, informe o nome fantasia."/>
+                          <CFormInput name='nome' placeholder="Nome fantasia" autoComplete="username" required feedbackInvalid="Por favor, informe o nome fantasia."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>@</CInputGroupText>
@@ -211,11 +237,12 @@ const Register = () => {
                             <CIcon icon={cilLockLocked} />
                           </CInputGroupText>
                           <CFormInput
+                            name='password'
                             type="password"
                             placeholder="Senha"
                             autoComplete="new-password"
                             required
-                            feedbackInvalid="Por favor, informe uma sonha."
+                            feedbackInvalid="Por favor, informe uma senha."
                           />
                         </CInputGroup>
                         <CInputGroup className="mb-4">
