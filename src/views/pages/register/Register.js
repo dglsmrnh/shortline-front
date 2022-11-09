@@ -67,18 +67,14 @@ const Register = () => {
         body: body,
         headers: myHeaders
       })
-      .then(response => {
-        let location = response.headers.location + ""; 
+      .then(() => {
         if(isCompany){
-          let location = response.headers.location + ""; 
-          let id = location.split("/")[2];
-
           fetch("http://shortline-app.heroku.com/users", {
             method: 'POST',
             body: body
             })  
         }
-        window.location.href = "/home";
+        window.location.href = "/#/home";
       })
       .catch(e => {
         console.log(e)
