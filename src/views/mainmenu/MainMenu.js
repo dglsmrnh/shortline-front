@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import { QRCodeCanvas } from "qrcode.react";
- 
+
 import theme from "src/components/global/theme";
 import swal from "sweetalert";
 
@@ -24,7 +24,7 @@ const MainMenu = () => {
     anchor.click();
     document.body.removeChild(anchor);
   };
-  
+
   const qrRef = useRef();
 
   const qrcode = (
@@ -35,8 +35,8 @@ const MainMenu = () => {
       level={"H"}
       includeMargin = {true}
     />
-   ); 
-  
+   );
+
   let [isInfoEnable, setIsInfoEnable] = useState(false); //Vem do backend
   let [isCompany, setIsCompany] = useState(false); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
