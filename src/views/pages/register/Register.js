@@ -61,29 +61,25 @@ const Register = () => {
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    try{
-      fetch("http://shortline-app.herokuapp.com/users", {
-        method: 'POST',
-        body: body,
-        headers: myHeaders
-      })
-      .then(() => {
-        if(isCompany){
-          fetch("http://shortline-app.heroku.com/users", {
-            method: 'POST',
-            body: body
-            })  
-        }
-        window.location.href = "/#/home";
-      })
-      .catch(e => {
-        console.log(e)
-      }).finally(() => {
-        console.log("oi");
-      }) //snackbar
-    } catch (e){
-      console.log(e);
-    }
+    fetch("http://shortline-app.herokuapp.com/users", {
+      method: 'POST',
+      body: body,
+      headers: myHeaders
+    })
+    .then(() => {
+      if(isCompany){
+        fetch("http://shortline-app.heroku.com/users", {
+          method: 'POST',
+          body: body
+          })  
+      }
+      window.location.href = "/#/home";
+    })
+    .catch(e => {
+      console.log(e)
+    }).finally(() => {
+      console.log("oi");
+    }) //snackbar
   }
 
   return (
