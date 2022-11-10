@@ -65,7 +65,10 @@ const MainMenu = () => {
   }
 
   function handleManageQueueClick() {
-    window.location.href = '/#/queue';
+    if(localStorage.getItem("username") != null)
+      window.location.href = '/#/queue';
+    else
+      window.location.href = '/#/';
   }
 
   function handleCloseQueueClick() {
@@ -77,6 +80,8 @@ const MainMenu = () => {
   const saveNewQueue = (maxAmount) => {
     if(maxAmount <= 0 || !maxAmount) {
       swal("Erro", "Insira um tamanho máximo válido", "error");
+    } else if (localStorage.getItem(isCompany) === 'false') {
+      swal("Erro", "Usuário consumidor tentando criar uma fila nova", "error");
     }
     else {
       setModalVisible(false);
@@ -84,13 +89,17 @@ const MainMenu = () => {
       tempQueue.maxAmount = maxAmount;
       tempQueue.active = true;
 
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      headers.append("Authorization", 'Basic ' + btoa(localStorage.getItem("username") + ':' + localStorage.getItem("password")));
+
       fetch("http://shortline-app.herokuapp.com/queues",{
         method: 'POST',
-        headers: {'Authorization' : 'Basic ' + btoa(localStorage.getItem("username") + ':' + localStorage.getItem("password"))},
-        body: {
+        headers: headers,
+        body: JSON.stringify({
           "maxSize": maxAmount,
           "idCompany": localStorage.getItem("idCompany") 
-        }
+        })
       }).then((res) => {
         setQueue(tempQueue);
       }).catch((e) => {
@@ -99,7 +108,10 @@ const MainMenu = () => {
     }
   }
 
-  if(isCompany) {
+  if (localStorage.getItem("username") === null || localStorage.getItem("username") === undefined){
+    window.location.href = '/#/home';
+  }
+  else if(isCompany) {
     return(
       <div>
         <CContainer style={{  width: '100%', height: '100%', maxWidth: '1000px'}}>
@@ -181,6 +193,7 @@ const MainMenu = () => {
     )
   }
   else {
+    var user = localStorage.getItem("username");
     return(
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>

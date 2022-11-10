@@ -31,9 +31,6 @@ const Login = () => {
   function handleSubmit(e) {
     const data = e.currentTarget;
 
-    localStorage.setItem("username", data.username.value)
-    localStorage.setItem("password", data.password.value)
-    
     e.preventDefault()
     fetch("http://shortline-app.herokuapp.com/users/" + data.username.value, {
       method: 'GET',
@@ -41,13 +38,16 @@ const Login = () => {
     })
     .then((res) => {
       if(res.ok){
-        localStorage.setItem("username", data.username.value)
-        localStorage.setItem("password", data.password.value)
-        
+        localStorage.setItem("username", data.username.value);
+        localStorage.setItem("password", data.password.value);
+
         res.json().then(json => {
           localStorage.setItem("isCompany", json.isCompany)
         });
+        setTimeout(() => localStorage.clear(), 1000000)
         window.location.href = "/#/mainmenu";
+      } else {
+        setAlert(true);
       }
     })
     .catch(e => {
@@ -55,6 +55,9 @@ const Login = () => {
     }) //snackbar */
   }
 
+  if(localStorage.getItem("username") != null || localStorage.getItem("username") != undefined) {
+    window.location.href = "/#/mainmenu";
+  }
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>

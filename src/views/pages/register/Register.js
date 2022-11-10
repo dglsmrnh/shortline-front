@@ -73,7 +73,7 @@ const Register = () => {
           body: body
           })  
       }
-      window.location.href = "/#/home";
+      window.location.href = "/#/";
     })
     .catch(e => {
       console.log(e)
