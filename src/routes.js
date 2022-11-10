@@ -11,6 +11,7 @@ const Login = React.lazy(() => import('./views/pages/login/Login'))
 //Queue
 const Queue = React.lazy(() => import('./views/queue/Queue'))
 const Scan = React.lazy(() => import('./views/scan/Scan'))
+const Reserve = React.lazy(() => import('./views/search/SearchLine'))
 
 //Register
 const Edit = React.lazy(() => import('./views/user/EditUser'))
@@ -68,6 +69,7 @@ const routes = [
   { path: '/mainmenu', name: 'mainmenu', element: Home },
   { path: '/edit', name: 'Editar', element: Edit },
   { path: '/scan', name: 'scan', element: Scan },
+  { path: '/search', name: 'reservar', element: Reserve },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
