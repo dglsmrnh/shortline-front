@@ -40,7 +40,7 @@ const Login = () => {
       if(res.ok){
         localStorage.setItem("username", data.username.value);
         localStorage.setItem("password", data.password.value);
-
+        localStorage.setItem("timeout", Date.now())
         res.json().then(json => {
           localStorage.setItem("isCompany", json.isCompany)
         });
@@ -55,7 +55,12 @@ const Login = () => {
     }) //snackbar */
   }
 
-  if(localStorage.getItem("username") != null || localStorage.getItem("username") != undefined) {
+  if(localStorage.getItem("username") !== null || localStorage.getItem("username") !== undefined && localStorage.getItem("timeout") !== null) {
+    const diferencaData = Date.now() - localStorage.getItem("timeout")
+    if(diferencaData > 1000000) {
+      localStorage.clear()
+      window.location.href = "/";
+    }
     window.location.href = "/#/mainmenu";
   }
   return (

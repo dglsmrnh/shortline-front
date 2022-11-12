@@ -109,7 +109,7 @@ const MainMenu = () => {
   }
 
   if (localStorage.getItem("username") === null || localStorage.getItem("username") === undefined){
-    window.location.href = '/#/home';
+    window.location.href = '/';
   }
   else if(isCompany) {
     return(
@@ -193,7 +193,6 @@ const MainMenu = () => {
     )
   }
   else {
-    var user = localStorage.getItem("username");
     return(
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
