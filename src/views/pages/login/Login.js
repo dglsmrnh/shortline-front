@@ -42,10 +42,12 @@ const Login = () => {
         localStorage.setItem("password", data.password.value);
         localStorage.setItem("timeout", Date.now())
         res.json().then(json => {
+          localStorage.setItem("userId", json.userId)
           localStorage.setItem("isCompany", json.isCompany)
+          window.location.href = "/#/mainmenu";
+          
         });
         setTimeout(() => localStorage.clear(), 1000000)
-        window.location.href = "/#/mainmenu";
       } else {
         setAlert(true);
       }

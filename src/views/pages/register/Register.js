@@ -34,7 +34,7 @@ const Register = () => {
     const data = e.currentTarget;
     
     let isCompany = false
-    if(data?.cpf?.value === null){
+    if(data?.cpf === undefined){
       isCompany = true
     }
 
@@ -66,12 +66,18 @@ const Register = () => {
       body: body,
       headers: myHeaders
     })
-    .then(() => {
-      if(isCompany){
-        fetch("http://shortline-app.heroku.com/users", {
+    .then(res => {
+      if(isCompany && res.ok){
+        fetch("http://shortline-app.herokuapp.com/companies", {
           method: 'POST',
-          body: body
-          })  
+          body: body,
+          headers: myHeaders
+        })
+        .then(res => {
+          if(res.ok){
+            console.log("empresa salva");
+          }
+        })
       }
       window.location.href = "/#/";
     })

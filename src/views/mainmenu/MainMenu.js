@@ -38,7 +38,7 @@ const MainMenu = () => {
    ); 
   
   let [isInfoEnable, setIsInfoEnable] = useState(false); //Vem do backend
-  let [isCompany, setIsCompany] = useState(false); //Vem do backend
+  let [isCompany, setIsCompany] = useState(localStorage.getItem("isCompany") === "true"); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
   let [queue, setQueue] = useState({peopleAmount: 0, active: false});
   let [reserveInfo, setReserveInfo] = useState(
@@ -110,8 +110,7 @@ const MainMenu = () => {
 
   if (localStorage.getItem("username") === null || localStorage.getItem("username") === undefined){
     window.location.href = '/';
-  }
-  else if(isCompany) {
+  } else if (localStorage.getItem("isCompany") == "true") {
     return(
       <div>
         <CContainer style={{  width: '100%', height: '100%', maxWidth: '1000px'}}>
@@ -193,6 +192,8 @@ const MainMenu = () => {
     )
   }
   else {
+    var value = localStorage.getItem("isCompany");
+    console.log(value)
     return(
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
