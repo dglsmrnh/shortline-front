@@ -65,9 +65,23 @@ const MainMenu = () => {
       .then((res) => {
           if(res.ok) {
             res.json().then(jsonQueue => {
-
+              localStorage.setItem("queue", JSON.stringify({
+                active: jsonQueue.active,
+                peopleAmount: jsonQueue.maxSize - jsonQueue.vacancies,
+                maxAmount: jsonQueue.maxSize,
+                maxSize: jsonQueue.maxSize,
+                vacancies: jsonQueue.vacancies,
+                idCompany: jsonQueue.idCompany 
+              }));
+              setQueue({
+                active: jsonQueue.active,
+                peopleAmount: jsonQueue.maxSize - jsonQueue.vacancies,
+                maxAmount: jsonQueue.maxSize,
+                maxSize: jsonQueue.maxSize,
+                vacancies: jsonQueue.vacancies,
+                idCompany: jsonQueue.idCompany 
+              })
             })
-            
           }
       }).catch((e) => {
         console.log(e)
@@ -103,10 +117,22 @@ const MainMenu = () => {
     let tempQueue = queue;
     tempQueue.peopleAmount = 0;
     tempQueue.active = false;
-    queueLocal = tempQueue;
-    localStorage.removeItem("queue");
-    setQueue(tempQueue);
-    window.location.reload(true);
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    fetch("http://shortline-app.herokuapp.com/queues/" + localStorage.getItem("idQueue"),{
+      method: 'PUT',
+      headers: headers
+    })
+    .catch((e) => {
+      console.log(e)
+    }).finally (() => {
+      queueLocal = tempQueue;
+      localStorage.removeItem("queue");
+      setQueue(tempQueue);
+      window.location.reload(true);
+      console.log("terminou desativar queues")
+    })    
   }
 
   const saveNewQueue = async (maxAmount) => {
