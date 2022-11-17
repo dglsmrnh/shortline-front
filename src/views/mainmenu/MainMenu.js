@@ -53,6 +53,27 @@ const MainMenu = () => {
   function getQueue() {
     if(localStorage.getItem("queue") !== undefined && localStorage.getItem("queue") !== null){
       return JSON.parse(localStorage.getItem("queue"));
+    } else if (localStorage.getItem("idQueue") !== undefined && localStorage.getItem("idQueue") !== null){
+      var headers = new Headers();
+      headers.append("Content-Type", "application/json");
+
+      
+      fetch("http://shortline-app.herokuapp.com/queues/" + localStorage.getItem("idQueue"),{
+        method: 'GET',
+        headers: headers
+      })
+      .then((res) => {
+          if(res.ok) {
+            res.json().then(jsonQueue => {
+
+            })
+            
+          }
+      }).catch((e) => {
+        console.log(e)
+      }).finally (() => {
+        console.log("terminou GET queues")
+      })
     }
 
     return {peopleAmount: 0, active: false};
@@ -80,9 +101,12 @@ const MainMenu = () => {
 
   function handleCloseQueueClick() {
     let tempQueue = queue;
+    tempQueue.peopleAmount = 0;
     tempQueue.active = false;
-    setQueue(tempQueue);
+    queueLocal = tempQueue;
     localStorage.removeItem("queue");
+    setQueue(tempQueue);
+    window.location.reload(true);
   }
 
   const saveNewQueue = async (maxAmount) => {
@@ -106,20 +130,25 @@ const MainMenu = () => {
         })
       }).then((res) => {
           if(res.ok) {
-            localStorage.setItem("queue", JSON.stringify({
-              active: true,
-              peopleAmount: 0,
-              maxAmount: maxAmount,
-              maxSize: maxAmount,
-              idCompany: localStorage.getItem("idCompany") 
-            }));
-            setQueue({
-              active: true,
-              peopleAmount: 0,
-              maxAmount: maxAmount,
-              maxSize: maxAmount,
-              idCompany: localStorage.getItem("idCompany") 
+            res.json().then(jsonj => {
+              localStorage.setItem("idQueue", jsonj.id)
+              console.log(jsonj)
+              localStorage.setItem("queue", JSON.stringify({
+                active: true,
+                peopleAmount: 0,
+                maxAmount: maxAmount,
+                maxSize: maxAmount,
+                idCompany: localStorage.getItem("idCompany") 
+              }));
+              setQueue({
+                active: true,
+                peopleAmount: 0,
+                maxAmount: maxAmount,
+                maxSize: maxAmount,
+                idCompany: localStorage.getItem("idCompany") 
+              })
             }) 
+            
           }
       }).catch((e) => {
         console.log(e)
