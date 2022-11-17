@@ -1,4 +1,4 @@
-import React from 'react'
+import {React, useState} from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -21,6 +21,11 @@ import { logo } from 'src/assets/brand/logo'
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  const refresh = useState(true);
+  function isLogged() {
+    return localStorage.getItem("username") !== null && localStorage.getItem("username") !== undefined
+  }
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -48,25 +53,14 @@ const AppHeader = () => {
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem>
+          
         </CHeaderNav>
-        <CHeaderNav className="ms-3">
-          <AppHeaderDropdown />
-        </CHeaderNav>
+        {
+          isLogged() && 
+          <CHeaderNav className="ms-3" >
+            <AppHeaderDropdown />
+          </CHeaderNav>
+        }
       </CContainer>
       <CHeaderDivider />
       <CContainer fluid>

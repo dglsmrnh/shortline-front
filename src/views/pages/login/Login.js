@@ -16,7 +16,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-
+import { AppHeader } from 'src/components'
 import logo from '../../../assets/images/logoV2.png'
 
 const Login = () => { 
@@ -58,16 +58,19 @@ const Login = () => {
                   localStorage.setItem("timeout", Date.now())
                   localStorage.setItem("userId", json.userId)
                   localStorage.setItem("isCompany", json.isCompany)
+                  localStorage.setItem("reload", true)
                   window.location.href = "/#/mainmenu";
                 })    
               }
-              })
+            })
           } else {
             localStorage.setItem("username", data.username.value);
             localStorage.setItem("password", data.password.value);
             localStorage.setItem("timeout", Date.now())
             localStorage.setItem("userId", json.userId)
             localStorage.setItem("isCompany", json.isCompany)
+            localStorage.setItem("isCompany", json.isCompany)
+            localStorage.setItem("reload", true)
             window.location.href = "/#/mainmenu";
           }
         });

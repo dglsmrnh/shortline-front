@@ -14,7 +14,7 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCalendar, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
+import { cilBraille, cilCalendar, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
 import Map from '../../components/custom/Map/Map';
 
 const Range = () => {
@@ -42,9 +42,12 @@ const Range = () => {
             </CCardHeader>
             <CCardBody className="p-4">                
             <CForm className="needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <CFormInput plainText placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
-              </div>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilUser} />
+                </CInputGroupText>
+                <CFormInput placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
+              </CInputGroup>
               <CInputGroup className="mb-3">
                 <CInputGroupText>
                   <CIcon icon={cilUser} />
@@ -61,9 +64,12 @@ const Range = () => {
                 <CInputGroupText>@</CInputGroupText>
                 <CFormInput type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
               </CInputGroup>
-              <div className="mb-3">
-                <CFormInput plainText placeholder="CNPJ" autoComplete="email" required feedbackInvalid="Por favor, informe seu CNPJ."/>
-              </div>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilBraille} />
+                </CInputGroupText>
+                <CFormInput placeholder="CNPJ" autoComplete="email" required feedbackInvalid="Por favor, informe seu CNPJ."/>
+              </CInputGroup>
               <CInputGroup className="mb-3">
                 <CInputGroupText>
                   <CIcon icon={cilPhone} />
@@ -94,10 +100,6 @@ const Range = () => {
                   feedbackInvalid="Por favor, repita a senha corretamente."
                 />
               </CInputGroup>
-              <div className="mb-3">
-                <CFormLabel htmlFor="formFile">Selecione uma imagem de perfil</CFormLabel>
-                <CFormInput type="file" id="formFile"/>
-              </div>
               <CInputGroup className="mb-3">
                 <CInputGroupText>
                   <CIcon icon={cilMap} />
@@ -126,10 +128,13 @@ const Range = () => {
                   <strong>Informações do usuário</strong>
                 </CCardHeader>
                 <CCardBody className="p-4">                              
-                  <CForm className="needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
-                    <div className='mb-3'>
-                      <CFormInput plainText placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
-                    </div>
+                    <CForm className="needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupText>
+                        <CIcon icon={cilUser} />
+                      </CInputGroupText>
+                      <CFormInput placeholder="Username" autoComplete="username" required feedbackInvalid="Por favor, informe um nome de usuário."/>
+                    </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -146,9 +151,12 @@ const Range = () => {
                       <CInputGroupText>@</CInputGroupText>
                       <CFormInput type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
                     </CInputGroup>
-                    <div className='mb-3'>
-                      <CFormInput plainText placeholder="CPF" autoComplete="email" required feedbackInvalid="Por favor, informe seu CPF."/>
-                    </div>
+                    <CInputGroup className='mb-3'>
+                      <CInputGroupText>
+                        <CIcon icon={cilBraille} />
+                      </CInputGroupText>
+                      <CFormInput placeholder="CPF" autoComplete="email" required feedbackInvalid="Por favor, informe seu CPF."/>
+                    </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilCalendar} />
@@ -200,10 +208,6 @@ const Range = () => {
                         feedbackInvalid="Por favor, repita a senha corretamente."
                       />
                     </CInputGroup>
-                    <div className="mb-3">
-                      <CFormLabel htmlFor="formFile">Selecione uma imagem de perfil</CFormLabel>
-                      <CFormInput type="file" id="formFile"/>
-                    </div>
                     <div className="d-grid">
                       <CButton color="success" type="submit">Confirmar edição</CButton>
                     </div>

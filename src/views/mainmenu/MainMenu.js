@@ -184,9 +184,17 @@ const MainMenu = () => {
     }
   }
 
+  function reloadPage() {
+    if (localStorage.getItem("reload") !== null && localStorage.getItem("reload") !== undefined) {
+      localStorage.removeItem("reload")
+      window.location.reload(true)
+    }
+  }
+
   if (localStorage.getItem("username") === null || localStorage.getItem("username") === undefined){
     window.location.href = '/';
   } else if (localStorage.getItem("isCompany") === "true") {
+    reloadPage()
     return(
       <div>
         <CContainer style={{  width: '100%', height: '100%', maxWidth: '1000px'}}>
@@ -268,6 +276,7 @@ const MainMenu = () => {
     )
   }
   else {
+    reloadPage()
     return(
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>

@@ -185,10 +185,7 @@ const Register = () => {
                             feedbackInvalid="Por favor, repita a senha corretamente."
                           />
                         </CInputGroup>
-                        <div className="mb-3">
-                          <CFormLabel htmlFor="formFile">Selecione uma imagem de perfil</CFormLabel>
-                          <CFormInput type="file" id="formFile"/>
-                        </div>
+                        
                         <div className="d-grid">
                           <CButton color="success" type="submit">Criar conta</CButton>
                         </div>
@@ -258,10 +255,6 @@ const Register = () => {
                             feedbackInvalid="Por favor, repita a senha corretamente."
                           />
                         </CInputGroup>
-                        <div className="mb-3">
-                          <CFormLabel htmlFor="formFile">Selecione uma imagem de perfil</CFormLabel>
-                          <CFormInput type="file" id="formFile"/>
-                        </div>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilMap} />
