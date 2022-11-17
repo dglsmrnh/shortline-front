@@ -76,10 +76,13 @@ const Register = () => {
         .then(res => {
           if(res.ok){
             console.log("empresa salva");
+            window.location.href = "/#/";
+
           }
         })
+      } else {
+        window.location.href = "/#/";
       }
-      window.location.href = "/#/";
     })
     .catch(e => {
       console.log(e)

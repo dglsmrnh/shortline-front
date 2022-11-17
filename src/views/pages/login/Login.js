@@ -32,20 +32,44 @@ const Login = () => {
     const data = e.currentTarget;
 
     e.preventDefault()
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
     fetch("http://shortline-app.herokuapp.com/users/" + data.username.value, {
       method: 'GET',
       headers: {'Authorization' : 'Basic ' + btoa(data.username.value + ':' + data.password.value)}
     })
     .then((res) => {
       if(res.ok){
-        localStorage.setItem("username", data.username.value);
-        localStorage.setItem("password", data.password.value);
-        localStorage.setItem("timeout", Date.now())
+        
         res.json().then(json => {
-          localStorage.setItem("userId", json.userId)
-          localStorage.setItem("isCompany", json.isCompany)
-          window.location.href = "/#/mainmenu";
           
+          if(json.isCompany){
+            fetch("http://shortline-app.herokuapp.com/users/"+data.username.value+"/companies", {
+              method: 'GET',
+              headers: myHeaders 
+            }).then(resp => {
+              if(resp.ok){
+                resp.json().then(jsonr => {
+                  localStorage.setItem("idCompany", jsonr.id)
+                  localStorage.setItem("username", data.username.value);
+                  localStorage.setItem("password", data.password.value);
+                  localStorage.setItem("timeout", Date.now())
+                  localStorage.setItem("userId", json.userId)
+                  localStorage.setItem("isCompany", json.isCompany)
+                  window.location.href = "/#/mainmenu";
+                })    
+              }
+              })
+          } else {
+            localStorage.setItem("username", data.username.value);
+            localStorage.setItem("password", data.password.value);
+            localStorage.setItem("timeout", Date.now())
+            localStorage.setItem("userId", json.userId)
+            localStorage.setItem("isCompany", json.isCompany)
+            window.location.href = "/#/mainmenu";
+          }
         });
         setTimeout(() => localStorage.clear(), 1000000)
       } else {

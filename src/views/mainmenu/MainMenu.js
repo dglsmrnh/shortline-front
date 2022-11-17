@@ -40,7 +40,7 @@ const MainMenu = () => {
   let [isInfoEnable, setIsInfoEnable] = useState(false); //Vem do backend
   let [isCompany, setIsCompany] = useState(localStorage.getItem("isCompany") === "true"); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
-  let [queue, setQueue] = useState({peopleAmount: 0, active: false});
+  let [queue, setQueue] = useState(getQueue());
   let [reserveInfo, setReserveInfo] = useState(
     {
       name: "Giuseppe Kadura",
@@ -48,7 +48,15 @@ const MainMenu = () => {
       posicao: 4
     }
   )
+  let queueLocal = getQueue();
 
+  function getQueue() {
+    if(localStorage.getItem("queue") !== undefined && localStorage.getItem("queue") !== null){
+      return JSON.parse(localStorage.getItem("queue"));
+    }
+
+    return {peopleAmount: 0, active: false};
+  }
 
   function handleIconClick() {
     if(isCompany) {
@@ -61,7 +69,6 @@ const MainMenu = () => {
 
   function handleNewQueueClick() {
     setModalVisible(true);
-    
   }
 
   function handleManageQueueClick() {
@@ -75,9 +82,10 @@ const MainMenu = () => {
     let tempQueue = queue;
     tempQueue.active = false;
     setQueue(tempQueue);
+    localStorage.removeItem("queue");
   }
 
-  const saveNewQueue = (maxAmount) => {
+  const saveNewQueue = async (maxAmount) => {
     if(maxAmount <= 0 || !maxAmount) {
       swal("Erro", "Insira um tamanho máximo válido", "error");
     } else if (localStorage.getItem(isCompany) === 'false') {
@@ -85,15 +93,11 @@ const MainMenu = () => {
     }
     else {
       setModalVisible(false);
-      let tempQueue = queue;
-      tempQueue.maxAmount = maxAmount;
-      tempQueue.active = true;
 
       var headers = new Headers();
       headers.append("Content-Type", "application/json");
-      headers.append("Authorization", 'Basic ' + btoa(localStorage.getItem("username") + ':' + localStorage.getItem("password")));
 
-      fetch("http://shortline-app.herokuapp.com/queues",{
+      await fetch("http://shortline-app.herokuapp.com/queues",{
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
@@ -101,16 +105,33 @@ const MainMenu = () => {
           "idCompany": localStorage.getItem("idCompany") 
         })
       }).then((res) => {
-        setQueue(tempQueue);
+          if(res.ok) {
+            localStorage.setItem("queue", JSON.stringify({
+              active: true,
+              peopleAmount: 0,
+              maxAmount: maxAmount,
+              maxSize: maxAmount,
+              idCompany: localStorage.getItem("idCompany") 
+            }));
+            setQueue({
+              active: true,
+              peopleAmount: 0,
+              maxAmount: maxAmount,
+              maxSize: maxAmount,
+              idCompany: localStorage.getItem("idCompany") 
+            }) 
+          }
       }).catch((e) => {
         console.log(e)
+      }).finally (() => {
+        console.log("terminou")
       })
     }
   }
 
   if (localStorage.getItem("username") === null || localStorage.getItem("username") === undefined){
     window.location.href = '/';
-  } else if (localStorage.getItem("isCompany") == "true") {
+  } else if (localStorage.getItem("isCompany") === "true") {
     return(
       <div>
         <CContainer style={{  width: '100%', height: '100%', maxWidth: '1000px'}}>
@@ -121,12 +142,12 @@ const MainMenu = () => {
                 <CCardTitle style={{margin: '0px', fontFamily: 'Poppins', fontSize: '24px'}}>Minha fila</CCardTitle>
               </CCardHeader>
               <CCardBody style={{paddingLeft: '30px', paddingRight: '30px', paddingTop: '20px', paddingBottom: '20px'}}>
-                <CCardText style={{fontSize: '20px', marginBottom: '5px'}}>• Sua fila está <b>{queue.active ? "aberta" : "fechada"}</b></CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("Há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queue.active ? ("A capacidade máxima é de " + queue.maxAmount + " grupos") : ""}</CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queue.active && queue.peopleAmount >= 1) ? ("Ainda há " + queue.peopleAmount + (queue.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ""}</CCardText>
+                <CCardText style={{fontSize: '20px', marginBottom: '5px'}}>• Sua fila está <b>{queueLocal.active ? "aberta" : "fechada"}</b></CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queueLocal.active ? ("Há " + queueLocal.peopleAmount + (queueLocal.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queueLocal.active ? ("A capacidade máxima é de " + queueLocal.maxAmount + " grupos") : ""}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queueLocal.active && queueLocal.peopleAmount >= 1) ? ("Ainda há " + queueLocal.peopleAmount + (queueLocal.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ""}</CCardText>
               </CCardBody>
-              {!queue.active ?
+              {!queueLocal.active ?
               <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleNewQueueClick}>Abrir fila</CButton> :
               <CCard style={{borderColor: '#FFF'}}>
                 <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleManageQueueClick}>Gerenciar fila</CButton>
@@ -192,8 +213,6 @@ const MainMenu = () => {
     )
   }
   else {
-    var value = localStorage.getItem("isCompany");
-    console.log(value)
     return(
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
