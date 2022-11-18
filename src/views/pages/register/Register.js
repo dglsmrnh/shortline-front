@@ -34,9 +34,15 @@ const Register = () => {
     const data = e.currentTarget;
     
     let isCompany = false
+    let document = data?.cpf;
+    let subName = data?.sobrenome;
     if(data?.cpf === undefined){
+      document = data.cnpj;
       isCompany = true
+      subName = data.razao;
     }
+
+    let wat = data.localmap?.value;
 
     const body = JSON.stringify({
       username: data.username?.value,
@@ -49,7 +55,13 @@ const Register = () => {
       latitude: data.latitude?.value,
       longitude: data.longitude?.value, 
       name: data.nome?.value,
-      postalCode: data.postal_code?.value 
+      postalCode: data.postal_code?.value, 
+      cpfCnpj: document?.value,
+      email: data.email?.value,
+      lastname: subName.value,
+      gender: data.gender?.value,
+      telephone: data.telephone?.value,
+      address: data.local?.value
     })
 
     if(data.checkValidity() === false) {
@@ -137,17 +149,18 @@ const Register = () => {
                           <CInputGroupText>
                             <CIcon icon={cilCalendar} />
                           </CInputGroupText>
-                          <CFormInput type="date" placeholder="Data de Nascimento" autoComplete="email" required feedbackInvalid="Por favor, informe sua data de nascimento."/>
+                          <CFormInput name="date" type="date" placeholder="Data de Nascimento" autoComplete="email" required feedbackInvalid="Por favor, informe sua data de nascimento."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                         <CInputGroupText>
                             <CIcon icon={cilPhone} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Celular" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
+                          <CFormInput name="telephone" placeholder="Celular" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
                         </CInputGroup>
                         <div className="mb-3">
                           <CFormLabel className="fw-bold">Identidade de gênero</CFormLabel>                    
-                          <CFormSelect 
+                          <CFormSelect
+                            name="gender" 
                             aria-label="Identidade de gênero"
                             required
                             feedbackInvalid="Por favor, informe sua identidade de gênero."
@@ -216,19 +229,19 @@ const Register = () => {
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>@</CInputGroupText>
-                          <CFormInput type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
+                          <CFormInput name="email" type="email" placeholder="Email" autoComplete="email" required feedbackInvalid="Por favor, informe seu email."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilBraille} />
                           </CInputGroupText>
-                          <CFormInput placeholder="CNPJ" autoComplete="email" required feedbackInvalid="Por favor, informe seu CNPJ."/>
+                          <CFormInput name="cnpj" placeholder="CNPJ" autoComplete="email" required feedbackInvalid="Por favor, informe seu CNPJ."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilPhone} />
                           </CInputGroupText>
-                          <CFormInput placeholder="Telefone" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
+                          <CFormInput name="telephone" placeholder="Telefone" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
                         </CInputGroup>                        
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
@@ -259,10 +272,10 @@ const Register = () => {
                           <CInputGroupText>
                             <CIcon icon={cilMap} />
                           </CInputGroupText>
-                          <CFormInput id="map-autocomplete" placeholder="Selecione o seu endereço" autoComplete="username" required feedbackInvalid="Por favor, informe um endereço."/>
+                          <CFormInput name="local" id="map-autocomplete" placeholder="Selecione o seu endereço" autoComplete="username" required feedbackInvalid="Por favor, informe um endereço."/>
                         </CInputGroup>
                         <div className="mb-3">
-                          <Map id="map" height="400px"></Map>
+                          <Map name="localmap" id="map" height="400px"></Map>
                         </div>
                         <div className="d-grid">
                           <CButton color="success" type="submit">Criar conta</CButton>
