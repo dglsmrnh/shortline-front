@@ -53,34 +53,31 @@ const MainMenu = () => {
   function getQueue() {
     if(localStorage.getItem("queue") !== undefined && localStorage.getItem("queue") !== null){
       return JSON.parse(localStorage.getItem("queue"));
-    } else if (localStorage.getItem("idQueue") !== undefined && localStorage.getItem("idQueue") !== null){
+    } else {
       var headers = new Headers();
       headers.append("Content-Type", "application/json");
 
+      let queue = {peopleAmount: 0, active: false}
       
-      fetch("http://shortline-app.herokuapp.com/queues/" + localStorage.getItem("idQueue"),{
+      fetch("http://shortline-app.herokuapp.com/companies/" + localStorage.getItem("idCompany") + "/queues",{
         method: 'GET',
         headers: headers
       })
       .then((res) => {
           if(res.ok) {
             res.json().then(jsonQueue => {
-              localStorage.setItem("queue", JSON.stringify({
+              localStorage.setItem("idQueue", jsonQueue.id)
+              queue = {
                 active: jsonQueue.active,
                 peopleAmount: jsonQueue.maxSize - jsonQueue.vacancies,
                 maxAmount: jsonQueue.maxSize,
                 maxSize: jsonQueue.maxSize,
                 vacancies: jsonQueue.vacancies,
                 idCompany: jsonQueue.idCompany 
-              }));
-              setQueue({
-                active: jsonQueue.active,
-                peopleAmount: jsonQueue.maxSize - jsonQueue.vacancies,
-                maxAmount: jsonQueue.maxSize,
-                maxSize: jsonQueue.maxSize,
-                vacancies: jsonQueue.vacancies,
-                idCompany: jsonQueue.idCompany 
-              })
+              }
+
+              localStorage.setItem("queue", JSON.stringify(queue));
+              setQueue(queue)
             })
           }
       }).catch((e) => {
@@ -88,9 +85,9 @@ const MainMenu = () => {
       }).finally (() => {
         console.log("terminou GET queues")
       })
+      
+      return queue;
     }
-
-    return {peopleAmount: 0, active: false};
   }
 
   function handleIconClick() {
@@ -127,9 +124,7 @@ const MainMenu = () => {
     .catch((e) => {
       console.log(e)
     }).finally (() => {
-      queueLocal = tempQueue;
       localStorage.removeItem("queue");
-      setQueue(tempQueue);
       window.location.reload(true);
       console.log("terminou desativar queues")
     })    
