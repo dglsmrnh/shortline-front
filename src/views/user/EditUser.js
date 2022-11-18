@@ -133,7 +133,8 @@ const Range = () => {
       lastname: subName?.value,
       gender: data.gender?.value,
       telephone: data.telephone?.value,
-      address: data.local?.value
+      address: data.local?.value,
+      date : data.date?.value
     })
 
     if(data.checkValidity() === false) {
@@ -166,7 +167,7 @@ const Range = () => {
     })
   }
 
-  if(isCompany !== 'S'){
+  if(localStorage.getItem("isCompany") !== 'false'){
     getUser()
     return ( user !== false &&
       <CRow className="justify-content-center">
@@ -284,7 +285,7 @@ const Range = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput name='sobrenome' defaultValue={user.subName} placeholder="Sobrenome" autoComplete="username" required feedbackInvalid="Por favor, informe seu sobrenome."/>
+                      <CFormInput name="sobrenome" defaultValue={user.lastname} placeholder="Sobrenome" autoComplete="username" required feedbackInvalid="Por favor, informe seu sobrenome."/>
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>@</CInputGroupText>
@@ -294,13 +295,13 @@ const Range = () => {
                       <CInputGroupText>
                         <CIcon icon={cilBraille} />
                       </CInputGroupText>
-                      <CFormInput name='email' placeholder="CPF" defaultValue={user.cpfCnpj} autoComplete="email" required feedbackInvalid="Por favor, informe seu CPF."/>
+                      <CFormInput name='cpf' placeholder="CPF" defaultValue={user.cpfCnpj} autoComplete="email" required feedbackInvalid="Por favor, informe seu CPF."/>
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilCalendar} />
                       </CInputGroupText>
-                      <CFormInput name='date' type="date" placeholder="Data de Nascimento" defaultValue={user.date} autoComplete="email" required feedbackInvalid="Por favor, informe sua data de nascimento."/>
+                      <CFormInput name="date" type="date" placeholder="Data de Nascimento" defaultValue={user.date} autoComplete="email" required feedbackInvalid="Por favor, informe sua data de nascimento."/>
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                     <CInputGroupText>

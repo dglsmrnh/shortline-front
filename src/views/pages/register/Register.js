@@ -61,7 +61,8 @@ const Register = () => {
       lastname: subName.value,
       gender: data.gender?.value,
       telephone: data.telephone?.value,
-      address: data.local?.value
+      address: data.local?.value,
+      date: data.date?.value
     })
 
     if(data.checkValidity() === false) {
