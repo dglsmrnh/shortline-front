@@ -14,6 +14,8 @@ import {
 import ClientItem from '../../components/custom/ClientItem/ClientItem';
 import RequestItem from "../../components/custom/RequestItem/RequestItem";
 import swal from "sweetalert";
+import CIcon from "@coreui/icons-react";
+import { cilArrowLeft } from "@coreui/icons";
 
 const Queue = () => {
 
@@ -114,9 +116,14 @@ const Queue = () => {
     setIsActive(true);
   }
 
+  function handleGoBack() {
+    window.location.href = '/#/home';
+  }
+
   return(
     <CContainer style={{width: '100%', height: '100%'}}>
       <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+        <CIcon onClick={handleGoBack} style={{border: '1px solid #000', marginRight: '10px'}} icon={cilArrowLeft} height={36} width={36} size="custom-size"></CIcon>
         <CCard style={{width: '42vw', height: '60vh', display: 'flex', flexDirection: 'column'}}>
           <CCardHeader>
             <CCardTitle style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>Minha fila</CCardTitle>
