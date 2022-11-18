@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import { QRCodeCanvas } from "qrcode.react";
@@ -49,6 +49,9 @@ const MainMenu = () => {
     }
   )
 
+  useEffect(() => {
+    setIsCompany(localStorage.getItem("isCompany"));
+  }, []);
 
   function handleIconClick() {
     if(isCompany) {
@@ -61,7 +64,6 @@ const MainMenu = () => {
 
   function handleNewQueueClick() {
     setModalVisible(true);
-    
   }
 
   function handleManageQueueClick() {
@@ -89,7 +91,7 @@ const MainMenu = () => {
         headers: {'Authorization' : 'Basic ' + btoa(localStorage.getItem("username") + ':' + localStorage.getItem("password"))},
         body: {
           "maxSize": maxAmount,
-          "idCompany": localStorage.getItem("idCompany") 
+          "idCompany": localStorage.getItem("idCompany")
         }
       }).then((res) => {
         setQueue(tempQueue);

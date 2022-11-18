@@ -25,16 +25,16 @@ const Register = () => {
 
   const [validated, setValidated] = useState(false);
 
-  
+
   function handleChangeUser() {
     setValidated(false);
   }
 
   function handleSubmit(e) {
     const data = e.currentTarget;
-    
+
     let isCompany = false
-    if(data?.cpf?.value === null){
+    if(data?.cnpj?.value !== null){
       isCompany = true
     }
 
@@ -47,14 +47,14 @@ const Register = () => {
       idUser: null,
       addressNumber: data.address_number?.value,
       latitude: data.latitude?.value,
-      longitude: data.longitude?.value, 
+      longitude: data.longitude?.value,
       name: data.nome?.value,
-      postalCode: data.postal_code?.value 
+      postalCode: data.postal_code?.value
     })
 
     if(data.checkValidity() === false) {
       e.preventDefault();
-      e.stopPropagation();      
+      e.stopPropagation();
     }
     e.preventDefault();
     setValidated(true);
@@ -71,7 +71,7 @@ const Register = () => {
         fetch("http://shortline-app.heroku.com/users", {
           method: 'POST',
           body: body
-          })  
+          })
       }
       window.location.href = "/#/home";
     })
@@ -88,9 +88,9 @@ const Register = () => {
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
-              <CCardBody className="p-4">                
+              <CCardBody className="p-4">
                 <h1>Crie sua conta</h1>
-                <p className="text-medium-emphasis">E aproveite nosso serviço</p>                
+                <p className="text-medium-emphasis">E aproveite nosso serviço</p>
                   <CAccordion>
                     <CAccordionItem itemKey={1}>
                       <CAccordionHeader onClick={handleChangeUser}>Como cliente</CAccordionHeader>
@@ -137,8 +137,8 @@ const Register = () => {
                           <CFormInput placeholder="Celular" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
                         </CInputGroup>
                         <div className="mb-3">
-                          <CFormLabel className="fw-bold">Identidade de gênero</CFormLabel>                    
-                          <CFormSelect 
+                          <CFormLabel className="fw-bold">Identidade de gênero</CFormLabel>
+                          <CFormSelect
                             aria-label="Identidade de gênero"
                             required
                             feedbackInvalid="Por favor, informe sua identidade de gênero."
@@ -183,7 +183,7 @@ const Register = () => {
                         <div className="d-grid">
                           <CButton color="success" type="submit">Criar conta</CButton>
                         </div>
-                        </CForm>  
+                        </CForm>
                       </CAccordionBody>
                     </CAccordionItem>
                     <CAccordionItem itemKey={2}>
@@ -216,14 +216,14 @@ const Register = () => {
                           <CInputGroupText>
                             <CIcon icon={cilBraille} />
                           </CInputGroupText>
-                          <CFormInput placeholder="CNPJ" autoComplete="email" required feedbackInvalid="Por favor, informe seu CNPJ."/>
+                          <CFormInput name="cnpj" placeholder="CNPJ" autoComplete="email" required feedbackInvalid="Por favor, informe seu CNPJ."/>
                         </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilPhone} />
                           </CInputGroupText>
                           <CFormInput placeholder="Telefone" autoComplete="email" required feedbackInvalid="Por favor, informe seu celular."/>
-                        </CInputGroup>                        
+                        </CInputGroup>
                         <CInputGroup className="mb-3">
                           <CInputGroupText>
                             <CIcon icon={cilLockLocked} />
@@ -265,10 +265,10 @@ const Register = () => {
                         <div className="d-grid">
                           <CButton color="success" type="submit">Criar conta</CButton>
                         </div>
-                        </CForm>  
+                        </CForm>
                       </CAccordionBody>
                     </CAccordionItem>
-                  </CAccordion>                                  
+                  </CAccordion>
               </CCardBody>
             </CCard>
           </CCol>
