@@ -179,6 +179,14 @@ const MainMenu = () => {
     }
   }
 
+  function goToSearch() {
+    window.location.href = "/#/search";
+  }
+
+  function goToHistory() {
+    window.location.href = "/#/history";
+  }
+
   function reloadPage() {
     if (localStorage.getItem("reload") !== null && localStorage.getItem("reload") !== undefined) {
       localStorage.removeItem("reload")
@@ -275,11 +283,11 @@ const MainMenu = () => {
     return(
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
-          <CContainer onClick={handleIconClick} style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <CButton color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
+          <CContainer style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <CButton onClick={goToSearch} color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Entrar em uma fila/ver a fila atual
             </CButton>
-            <CButton color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
+            <CButton onClick={goToHistory} color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Histórico
             </CButton>
           </CContainer>
