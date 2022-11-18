@@ -144,9 +144,11 @@ const Range = () => {
     setValidated(true);
 
     var username = localStorage.getItem("username");
+    var password = localStorage.getItem("password");
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', 'Basic ' + btoa(username + ':' + password))
     fetch("http://shortline-app.herokuapp.com/users/" + username, {
       method: 'PUT',
       body: body,
