@@ -136,7 +136,7 @@ const MainMenu = () => {
     return(
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
-          <CContainer onClick={handleIconClick} style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <CContainer style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <CButton color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Entrar em uma fila/ver a fila atual
             </CButton>
@@ -144,6 +144,7 @@ const MainMenu = () => {
               Histórico
             </CButton>
           </CContainer>
+          <CIcon style={{marginRight: '10px'}} icon={cilHamburgerMenu} onClick={handleIconClick} height={36} width={36} size="custom-size"></CIcon>
       </CContainer>
     </div>
     )
