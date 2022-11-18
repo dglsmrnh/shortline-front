@@ -14,7 +14,7 @@ const Scan = () => {
   }
 
   return (
-    <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+    <CContainer >
       <CIcon onClick={handleGoBack} style={{border: '1px solid #000', marginRight: '10px'}} icon={cilArrowLeft} height={36} width={36} size="custom-size"></CIcon>
       <QrReader
         onResult={(result, error) => {
@@ -27,7 +27,7 @@ const Scan = () => {
             console.info(error);
           }
         }}
-        style={{ width: '100%' }}
+        style={{ width: '80%' }}
       />
       <p>{qrResponse}</p>
     </CContainer>
