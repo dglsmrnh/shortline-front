@@ -13,7 +13,7 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCalendar, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
+import { cilCalendar, cilListNumbered, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
 import Map from '../../components/custom/Map/Map';
 
 const Range = () => {
@@ -22,19 +22,31 @@ const Range = () => {
   const [validated, setValidated] = useState(false);
   const [visibleAlert, setAlert] = useState(false);
 
+  let retry = 0;
+
   function handleSubmit(e) {
     const data = e.currentTarget;
 
     if(data.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();      
     }
+    e.preventDefault();
+
     setValidated(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     
     const address = data.local.value;
+    const numberOfPeople = data.numberOfPeople?.value;
 
+    try{
+      fetchQueue(address, myHeaders, numberOfPeople);
+    } catch(e) {
+      fetchQueue(address, myHeaders, numberOfPeople);
+    }
+  }
+
+  function fetchQueue(address, myHeaders, numberOfPeople){
     fetch("http://shortline-app.herokuapp.com/queues?address=" + address, {
       method: 'GET',
       headers: myHeaders
@@ -44,34 +56,45 @@ const Range = () => {
         res.json().then(jsonQueue => {
           let body = JSON.stringify({
             idQueue: jsonQueue.id,
-            idUser: localStorage.getItem("userId")  
+            idUser: localStorage.getItem("userId"),
+            numberOfPeople: numberOfPeople  
           })
-          fetch("http://shortline-app.herokuapp.com/reserves", {
-            method: 'POST',
-            body: body,
-            headers: myHeaders
-          })
-          .then(res => {
-            if(res.ok) {
-              window.location.href = "/#/mainmenu"
-            }
-          })
-          .catch(e => {
-            console.log(e)
-          }).finally(() => {
-            console.log("finalizou reserva");
-          })          
+          fetchReserve(body, myHeaders)       
         }) 
       }
     })
-    .catch(e => {
-      console.log(e)
+    .catch(() => {
+      if(retry < 1) {
+        retry += 1;
+        fetchQueue(address, myHeaders, numberOfPeople)
+      }
     }).finally(() => {
       console.log("buscou queue");
     })
   }
 
-    return (
+  function fetchReserve(body, myHeaders) {
+    fetch("http://shortline-app.herokuapp.com/reserves", {
+      method: 'POST',
+      body: body,
+      headers: myHeaders
+    })
+    .then(res => {
+      if(res.ok) {
+        window.location.href = "/#/mainmenu"
+      }
+    })
+    .catch(() => {
+      if(retry < 2){
+        retry += 1;
+        fetchReserve(body, myHeaders)
+      } 
+    }).finally(() => {
+      console.log("finalizou reserva");
+    })
+  }
+
+  return (
       <CRow className="justify-content-center">
         <CCol md={9} lg={7} xl={6}>
           <CCard className="mx-4">
@@ -83,6 +106,12 @@ const Range = () => {
               Estabelecimento não está em funcionamento.
             </CAlert>              
             <CForm className="needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilListNumbered} />
+                </CInputGroupText>
+                <CFormInput name='numberOfPeople' type='Number' required placeholder="Número de pessoas na mesa" autoComplete="username" feedbackInvalid="Por favor, informe um número de pessoas."/>
+              </CInputGroup>
               <CInputGroup className="mb-3">
                 <CInputGroupText>
                   <CIcon icon={cilMap} />
