@@ -83,11 +83,11 @@ const History = () => {
               return (
                   <CCardHeader key={item.id} style={{maxHeight: '30vh'}}>
                     <CCardGroup style={{justifyContent: 'space-between', paddingTop: "15px"}}>
-                      <CCardText>Estabelecimento: Mc Donalds</CCardText>
+                      <CCardText>Estabelecimento: {item.nameCompany}</CCardText>
                       |
                       <CCardText>Numero de pessoas na mesa: {item.numberOfPeople}</CCardText>
                       |
-                      <CCardText>Situação: Finalizada</CCardText>
+                      <CCardText>Situação: {item.situation}</CCardText>
                     </CCardGroup>
                   </CCardHeader>
               )
