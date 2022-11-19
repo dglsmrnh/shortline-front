@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   CContainer,
@@ -19,41 +19,50 @@ import { cilArrowLeft } from "@coreui/icons";
 
 const Queue = () => {
 
-  let [clientList, setClientList] = useState([
-    {
-      name: "Maria",
-      peopleAmount: 3
-    },
-    {
-      name: "João",
-      peopleAmount: 2
-    },
-    {
-      name: "Carlos",
-      peopleAmount: 5
-    },
-    {
-      name: "Pedro",
-      peopleAmount: 1
-    }
-  ]);
-
-  let [waitingList, setWaitingList] = useState([
-    {
-      name: "Julia",
-      peopleAmount: 4
-    },
-    {
-      name: "Ana",
-      peopleAmount: 8
-    },
-    {
-      name: "Leonardo",
-      peopleAmount: 4
-    }
-  ])
-
   let [isActive, setIsActive] = useState(true);
+  let [queueMembers, setQueueMembers] = useState([]);
+  let [acceptedMembers, setAcceptedMembers] = useState([]);
+  let [pendingMembers, setPendingMembers] = useState([]);
+
+  var headers = new Headers();
+  headers.append("Content-Type", "application/json");
+
+  function loadQueue() {
+    fetch("http://shortline-app.herokuapp.com/reserves?username=" + localStorage.getItem("username"),{
+      method: 'GET',
+      headers: headers
+    })
+    .then((res) => {
+        if(res.ok) {
+          res.json().then(jsonQueue => {
+            let auxAccepted = 0;
+            let auxPending = 0;
+
+            setQueueMembers(jsonQueue);
+            localStorage.setItem("queueMembers", JSON.stringify(jsonQueue));
+
+            for(let i = 0; i < jsonQueue.length; i++) {
+              if(jsonQueue[i].status === 'P') {
+                auxPending++;
+              }
+              else if(jsonQueue[i].status === 'A') {
+                auxAccepted++;
+              }
+            }
+            setAcceptedMembers(auxAccepted);
+            setPendingMembers(auxPending);
+          })
+        }
+    }).catch((e) => {
+      console.log(e)
+    }).finally (() => {
+      console.log("terminou GET queueMembers")
+    })
+  }
+
+  useEffect(function() {
+    loadQueue();
+  }, [])
 
   function removeClientFromQueue(element) {
     swal({
@@ -67,12 +76,41 @@ const Queue = () => {
       dangerMode: true
     }).then(function(isConfirm) {
       if(!isConfirm) {
-        if(clientList.length === 1) {
-          setClientList([]);
+        let auxAccepted = 0;
+        let auxPending = 0;
+        let tempQueueMembers = queueMembers;
+        tempQueueMembers = tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
+        element.status = 'O';
+        tempQueueMembers.push(element);
+        setQueueMembers(tempQueueMembers);
+        localStorage.setItem("queueMembers", JSON.stringify(queueMembers));
+
+        for(let i = 0; i < queueMembers.length; i++) {
+          if(queueMembers[i].status === 'P') {
+            auxPending++;
+          }
+          else if(queueMembers[i].status === 'A') {
+            auxAccepted++;
+          }
         }
-        else {
-          setClientList(clientList.filter(value => value !== element));
-        }
+        setAcceptedMembers(auxAccepted);
+        setPendingMembers(auxPending);
+
+        fetch("http://shortline-app.herokuapp.com/reserves/" + element.id,{
+          method: 'PUT',
+          headers: headers,
+          body: JSON.stringify(element)
+        })
+        .then((res) => {
+            if(res.ok) {
+              console.log('Removido')
+
+            }
+        }).catch((e) => {
+          console.log(e)
+        }).finally (() => {
+          console.log("terminou GET queueMembers")
+        })
       }
     })
   }
@@ -89,19 +127,75 @@ const Queue = () => {
       dangerMode: true
     }).then(function(isConfirm) {
       if(!isConfirm) {
-        if(waitingList.length === 1) {
-          setWaitingList([]);
+        let auxAccepted = 0;
+        let auxPending = 0;
+        let tempQueueMembers = queueMembers;
+        tempQueueMembers = tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
+        element.status = 'O';
+        tempQueueMembers.push(element);
+        setQueueMembers(tempQueueMembers);
+        localStorage.setItem("queueMembers", JSON.stringify(queueMembers));
+
+        for(let i = 0; i < queueMembers.length; i++) {
+          if(queueMembers[i].status === 'P') {
+            auxPending++;
+          }
+          else if(queueMembers[i].status === 'A') {
+            auxAccepted++;
+          }
         }
-        else {
-          setWaitingList(waitingList.filter(value => value !== element));
-        }
+
+        fetch("http://shortline-app.herokuapp.com/reserves/" + element.id,{
+          method: 'PUT',
+          headers: headers,
+          body: JSON.stringify(element)
+        })
+        .then((res) => {
+            if(res.ok) {
+              console.log('Removido')
+            }
+        }).catch((e) => {
+          console.log(e)
+        }).finally (() => {
+          console.log("terminou GET queueMembers")
+        })
       }
     })
   }
 
   function acceptClientRequest(element) {
-    setWaitingList(waitingList.filter(value => value !== element));
-    setClientList([...clientList,element]);
+    let auxAccepted = 0;
+    let auxPending = 0;
+    let tempQueueMembers = queueMembers;
+    tempQueueMembers = tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
+    element.status = 'A';
+    tempQueueMembers.push(element);
+    setQueueMembers(tempQueueMembers);
+    localStorage.setItem("queueMembers", JSON.stringify(queueMembers));
+
+    for(let i = 0; i < queueMembers.length; i++) {
+      if(queueMembers[i].status === 'P') {
+        auxPending++;
+      }
+      else if(queueMembers[i].status === 'A') {
+        auxAccepted++;
+      }
+    }
+
+    fetch("http://shortline-app.herokuapp.com/reserves/" + element.id,{
+      method: 'PUT',
+      headers: headers,
+      body: JSON.stringify(element)
+    })
+    .then((res) => {
+        if(res.ok) {
+          console.log('Removido')
+        }
+    }).catch((e) => {
+      console.log(e)
+    }).finally (() => {
+      console.log("terminou GET queueMembers")
+    })
   }
 
   function redirectScan() {
@@ -127,14 +221,16 @@ const Queue = () => {
         <CCard style={{width: '42vw', height: '60vh', display: 'flex', flexDirection: 'column'}}>
           <CCardHeader>
             <CCardTitle style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>Minha fila</CCardTitle>
-            <CCardSubtitle>Há {clientList.length + (clientList.length === 1 ? " grupo na fila" : " grupos na fila")} </CCardSubtitle>
+            <CCardSubtitle>Há {acceptedMembers + (acceptedMembers === 1 ? " grupo na fila" : " grupos na fila")} </CCardSubtitle>
           </CCardHeader>
           <CCardBody style={{overflow: "scroll", paddingTop: "0px"}}>
             {
-              clientList.length > 0 ? clientList.map((element, i) => {
-                return(
-                  <ClientItem onClickRemove={() => removeClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
-                )
+              queueMembers.length > 0 ? queueMembers.map((element, i) => {
+                if(element.status === 'A') {
+                  return(
+                    <ClientItem onClickRemove={() => removeClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
+                  )
+                }
               }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Fila vazia</CCardText>
             }
           </CCardBody>
@@ -142,16 +238,17 @@ const Queue = () => {
         <CContainer style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", width: "42vw", height: "60vh"}}>
           <CCard style={{width: "100%", height: "30vh"}}>
             <CCardHeader>
-              {}
               <CCardTitle style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>Requisições</CCardTitle>
-              <CCardSubtitle>Há {waitingList.length + (waitingList.length === 1 ? " grupo solicitando entrada" : " grupos solicitando entrada")} </CCardSubtitle>
+              <CCardSubtitle>Há {pendingMembers + (pendingMembers === 1 ? " grupo solicitando entrada" : " grupos solicitando entrada")} </CCardSubtitle>
             </CCardHeader>
             <CCardBody style={{overflow: "scroll", paddingTop: "0px"}}>
               {
-                waitingList.length > 0 ? waitingList.map((element) => {
-                  return(
-                    <RequestItem onClickRefuse={() => removeClientRequest(element)} onClickAccept={() => acceptClientRequest(element)} key={element} name={element.name} people={element.peopleAmount}></RequestItem>
-                  )
+                queueMembers.length > 0 ? queueMembers.map((element) => {
+                  if(element.status === 'P') {
+                    return(
+                      <RequestItem onClickRefuse={() => removeClientRequest(element)} onClickAccept={() => acceptClientRequest(element)} key={element} name={element.name} people={element.peopleAmount}></RequestItem>
+                    )
+                  }
                 }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Sem requisições</CCardText>
               }
             </CCardBody>
