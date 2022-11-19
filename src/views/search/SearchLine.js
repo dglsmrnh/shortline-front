@@ -11,16 +11,24 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CContainer,
+  CCardText,
+  CCardTitle,
+  CCardSubtitle,
+  CCardGroup
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCalendar, cilListNumbered, cilLockLocked, cilMap, cilPhone, cilUser } from '@coreui/icons'
 import Map from '../../components/custom/Map/Map';
+import { cilCalendar, cilListNumbered, cilLockLocked, cilMap, cilPhone, cilUser , cilArrowLeft} from '@coreui/icons'
 
 const Range = () => {
 
   const isCompany = sessionStorage.getItem("userType");
   const [validated, setValidated] = useState(false);
   const [visibleAlert, setAlert] = useState(false);
+  const [hasReserve, setHasReserve] = useState("default");
+  const [reserves, setReserves] = useState([]);
+
 
   let retry = 0;
 
@@ -39,11 +47,7 @@ const Range = () => {
     const address = data.local.value;
     const numberOfPeople = data.numberOfPeople?.value;
 
-    try{
-      fetchQueue(address, myHeaders, numberOfPeople);
-    } catch(e) {
-      fetchQueue(address, myHeaders, numberOfPeople);
-    }
+    fetchQueue(address, myHeaders, numberOfPeople);
   }
 
   function fetchQueue(address, myHeaders, numberOfPeople){
@@ -67,6 +71,8 @@ const Range = () => {
       if(retry < 1) {
         retry += 1;
         fetchQueue(address, myHeaders, numberOfPeople)
+      } else {
+        retry = 0;
       }
     }).finally(() => {
       console.log("buscou queue");
@@ -88,13 +94,120 @@ const Range = () => {
       if(retry < 2){
         retry += 1;
         fetchReserve(body, myHeaders)
-      } 
+      } else {
+        retry = 0;
+      }
     }).finally(() => {
       console.log("finalizou reserva");
     })
   }
 
-  return (
+  function getReserve(){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    fetch("http://shortline-app.herokuapp.com/reserves?pending=false&has_reserve_search_logic=true&username="+localStorage.getItem("username"), {
+      method: 'GET',
+      headers: myHeaders
+    })
+    .then(res => {
+      if(res.ok && hasReserve === "default") {
+        res.json().then(jsonReserve => {
+          setReserves(jsonReserve)
+          setHasReserve(true)
+        })
+      } else if (hasReserve === "default") {
+        setHasReserve(false)
+      }
+    })
+    .catch(() => {
+      if(retry < 2){
+        retry += 1;
+        getReserve();
+      } else {
+        retry = 0;
+      }
+    }).finally(() => {
+      console.log("buscou reserva");
+    })
+  }
+  
+  function handleGoBack() {
+    window.location.href = "/#/mainmenu";
+  }
+
+
+  getReserve()
+  if(hasReserve === "default") {
+    return (
+      <CContainer style={{width: '100%', height: '100%'}}>
+      </CContainer>    
+    );
+  }
+  else if(hasReserve){
+    return (
+    <CContainer style={{width: '100%', height: '100%'}}>
+      <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
+        <CCard style={{width: '42vw', height: '60vh'}}>
+          <CCardHeader>
+            <CCardGroup style={{justifyContent: 'space-between'}}>
+              <CCardTitle style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>Minha Reserva Ativa</CCardTitle>
+              <CCardGroup>
+                <CIcon onClick={handleGoBack}  style={{border: '1px solid #000', alignContent: 'flex-end', marginTop: '10px', cursor: 'pointer'}} icon={cilArrowLeft} height={36} width={36} size="custom-size"></CIcon>
+              </CCardGroup>
+            </CCardGroup>
+            <CCardGroup>
+              <CCardSubtitle>Informações</CCardSubtitle>
+            </CCardGroup>
+          </CCardHeader>
+          <CCardBody style={{overflow: "scroll", paddingTop: "22px", border: '1px'}}>
+            {
+              reserves.length > 0 ? reserves.map((item, i) => {
+                return (
+                  <CContainer key={item.id} style={{border: '5px'}}>
+
+                    <CCardHeader style={{maxHeight: '50vh'}}>
+                      <CCardGroup style={{justifyContent: 'space-between', paddingTop: "15px"}}>
+                        <CCardText>Estabelecimento: {item.nameCompany}</CCardText>
+                        |
+                        <CCardText>Numero de pessoas na mesa: {item.numberOfPeople}</CCardText>
+                        |
+                        <CCardText>Situação: {item.situation}</CCardText>
+                      </CCardGroup>
+                      <CCardGroup style={{justifyContent: 'space-between', paddingTop: "2px"}}>
+                        <CCardText>Solicitado em: {item.registerIn}</CCardText>
+                      </CCardGroup>
+
+                      <CCardGroup style={{justifyContent: 'space-between', paddingTop: "20px"}}>
+                        <CCardText>Check-In: { item.checkIn !== null && item.checkIn !== undefined ? item.checkIn : "Não realizado" }</CCardText>
+                      </CCardGroup>
+
+                      <CCardGroup style={{justifyContent: 'space-between', paddingTop: "10px"}}>
+                        <CCardText style={{paddingTop: "10px"}}>Check-Out: { item.checkOut !== null && item.checkOut !== undefined ? item.checkOut : "Não realizado" }</CCardText>
+                        <CButton>Cancelar Reserva</CButton>
+                      </CCardGroup>
+
+                    </CCardHeader>
+                    <CContainer style={{display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
+                      <CCardGroup>
+                        <CCardText style={{paddingTop: "10px", fontSize: '90px'}}>{item.code}</CCardText>
+                      </CCardGroup>
+                    </CContainer>
+                    <CContainer style={{display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
+                      <CCardGroup>
+                        <CCardText style={{paddingTop: "10px", fontSize: '30px'}}>{item.code !== undefined ? "Posição na fila" : "Fora da fila"}</CCardText>
+                      </CCardGroup>
+                    </CContainer>
+                  </CContainer>        
+                )
+              }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Sem Reservas</CCardText>                
+            }
+          </CCardBody>
+        </CCard>
+      </CContainer>
+     </CContainer>    
+    );
+  } else {
+    return (
       <CRow className="justify-content-center">
         <CCol md={9} lg={7} xl={6}>
           <CCard className="mx-4">
@@ -130,6 +243,7 @@ const Range = () => {
         </CCol>
       </CRow>
     )
+  }
 }
 
 export default Range
