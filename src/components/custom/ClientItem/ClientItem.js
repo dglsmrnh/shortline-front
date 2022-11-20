@@ -7,10 +7,10 @@ import {
   CButton
 } from "@coreui/react";
 
-const ClientItem = ({name, onClickRemove, people}) => {
+const ClientItem = ({name, onClickRemove, numberOfPeople}) => {
   ClientItem.propTypes = {
     name: PropTypes.string,
-    people: PropTypes.number,
+    numberOfPeople: PropTypes.number,
     onClickRemove: PropTypes.func,
   }
 
@@ -24,7 +24,7 @@ const ClientItem = ({name, onClickRemove, people}) => {
     <CContainer style={{paddingBottom: "15px", borderBottom: "1px solid rgba(0, 0, 0, 0.2)"}}>
       <CContainer>
         <CCardText style={{fontSize: "20px", marginTop: "10px", marginBottom: "0px", fontWeight: "bold"}}>• {name}</CCardText>
-        <CCardText style={{fontSize: "14px", opacity: "70%", paddingLeft: "14px"}}>{people} {people === 1 ? "pessoa" : "pessoas"} </CCardText>
+        <CCardText style={{fontSize: "14px", opacity: "70%", paddingLeft: "14px"}}>{numberOfPeople} {numberOfPeople === 1 ? "pessoa" : "pessoas"} </CCardText>
       </CContainer>
       <CContainer style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "auto"}}>
         <CButton color="light" disabled={called} onClick={onClickCall}><b>{called ? "Chamado" : "Chamar"}</b></CButton>

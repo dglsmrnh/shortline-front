@@ -28,36 +28,45 @@ const Queue = () => {
   headers.append("Content-Type", "application/json");
 
   function loadQueue() {
-    fetch("http://shortline-app.herokuapp.com/reserves?username=" + localStorage.getItem("username"),{
-      method: 'GET',
-      headers: headers
-    })
-    .then((res) => {
-        if(res.ok) {
-          res.json().then(jsonQueue => {
-            let auxAccepted = 0;
-            let auxPending = 0;
 
-            setQueueMembers(jsonQueue);
-            localStorage.setItem("queueMembers", JSON.stringify(jsonQueue));
+    if(localStorage.getItem("queueMembers") != null) {
+      fetch("http://shortline-app.herokuapp.com/reserves?username=" + localStorage.getItem("username") + "&is_company=true",{
+        method: 'GET',
+        headers: headers
+      })
+      .then((res) => {
+          if(res.ok) {
+            res.json().then(jsonQueue => {
+              console.log(jsonQueue);
+              let auxAccepted = 0;
+              let auxPending = 0;
 
-            for(let i = 0; i < jsonQueue.length; i++) {
-              if(jsonQueue[i].status === 'P') {
-                auxPending++;
+              setQueueMembers(jsonQueue);
+              localStorage.setItem("queueMembers", JSON.stringify(jsonQueue));
+
+              for(let i = 0; i < jsonQueue.length; i++) {
+                if(jsonQueue[i].status === 'P') {
+                  auxPending++;
+                }
+                else if(jsonQueue[i].status === 'A') {
+                  auxAccepted++;
+                }
               }
-              else if(jsonQueue[i].status === 'A') {
-                auxAccepted++;
-              }
-            }
-            setAcceptedMembers(auxAccepted);
-            setPendingMembers(auxPending);
-          })
-        }
-    }).catch((e) => {
-      console.log(e)
-    }).finally (() => {
-      console.log("terminou GET queueMembers")
-    })
+              setAcceptedMembers(auxAccepted);
+              setPendingMembers(auxPending);
+            })
+          }
+      }).catch((e) => {
+        console.log(e)
+      }).finally (() => {
+        console.log("terminou GET loadQueue()")
+      })
+    }
+    else {
+      setQueueMembers(JSON.parse(localStorage.getItem("queueMembers")));
+      console.log("queueMembers carregado do localStorage");
+      console.log(queueMembers);
+    }
   }
 
   useEffect(function() {
@@ -103,13 +112,15 @@ const Queue = () => {
         })
         .then((res) => {
             if(res.ok) {
+              res.json().then(json => {
+                console.log(json);
+              })
               console.log('Removido')
-
             }
         }).catch((e) => {
           console.log(e)
         }).finally (() => {
-          console.log("terminou GET queueMembers")
+          console.log("terminou UPDATE queueMembers")
         })
       }
     })
@@ -157,7 +168,7 @@ const Queue = () => {
         }).catch((e) => {
           console.log(e)
         }).finally (() => {
-          console.log("terminou GET queueMembers")
+          console.log("terminou UPDATE queueMembers")
         })
       }
     })
@@ -167,9 +178,14 @@ const Queue = () => {
     let auxAccepted = 0;
     let auxPending = 0;
     let tempQueueMembers = queueMembers;
+    console.log(tempQueueMembers);
     tempQueueMembers = tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
+    console.log('Apos splice');
+    console.log(tempQueueMembers);
     element.status = 'A';
     tempQueueMembers.push(element);
+    console.log('Apos push');
+    console.log(tempQueueMembers);
     setQueueMembers(tempQueueMembers);
     localStorage.setItem("queueMembers", JSON.stringify(queueMembers));
 
@@ -194,7 +210,7 @@ const Queue = () => {
     }).catch((e) => {
       console.log(e)
     }).finally (() => {
-      console.log("terminou GET queueMembers")
+      console.log("terminou UPDATE queueMembers")
     })
   }
 
@@ -226,9 +242,9 @@ const Queue = () => {
           <CCardBody style={{overflow: "scroll", paddingTop: "0px"}}>
             {
               queueMembers.length > 0 ? queueMembers.map((element, i) => {
-                if(element.status === 'A') {
+                if(element.status === "A") {
                   return(
-                    <ClientItem onClickRemove={() => removeClientFromQueue(element)} key={element.name} name={element.name} people={element.peopleAmount}></ClientItem>
+                    <ClientItem onClickRemove={() => removeClientFromQueue(element)} key={element.id} name={element.user} numberOfPeople={element.numberOfPeople}></ClientItem>
                   )
                 }
               }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Fila vazia</CCardText>
@@ -243,10 +259,10 @@ const Queue = () => {
             </CCardHeader>
             <CCardBody style={{overflow: "scroll", paddingTop: "0px"}}>
               {
-                queueMembers.length > 0 ? queueMembers.map((element) => {
-                  if(element.status === 'P') {
+                queueMembers.length > 0 ? queueMembers.map((element, i) => {
+                  if(element.status === "P") {
                     return(
-                      <RequestItem onClickRefuse={() => removeClientRequest(element)} onClickAccept={() => acceptClientRequest(element)} key={element} name={element.name} people={element.peopleAmount}></RequestItem>
+                      <RequestItem onClickRefuse={() => removeClientRequest(element)} onClickAccept={() => acceptClientRequest(element)} key={element.id} name={element.user} numberOfPeople={element.numberOfPeople}></RequestItem>
                     )
                   }
                 }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Sem requisições</CCardText>

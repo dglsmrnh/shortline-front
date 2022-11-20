@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NewQueueModal from "src/components/custom/NewQueueModal/NewQueueModal";
 
 import { QRCodeCanvas } from "qrcode.react";
- 
+
 import theme from "src/components/global/theme";
 import swal from "sweetalert";
 
@@ -24,7 +24,7 @@ const MainMenu = () => {
     anchor.click();
     document.body.removeChild(anchor);
   };
-  
+
   const qrRef = useRef();
 
   const qrcode = (
@@ -35,8 +35,8 @@ const MainMenu = () => {
       level={"H"}
       includeMargin = {true}
     />
-   ); 
-  
+   );
+
   let [isInfoEnable, setIsInfoEnable] = useState(false); //Vem do backend
   let [isCompany, setIsCompany] = useState(localStorage.getItem("isCompany") === "true"); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
@@ -48,6 +48,7 @@ const MainMenu = () => {
       posicao: 4
     }
   )
+  let [amountOfPeopleWaiting, setAmountOfPeopleWaiting] = useState(0);
   let queueLocal = getQueue();
 
   function getQueue() {
@@ -58,7 +59,7 @@ const MainMenu = () => {
       headers.append("Content-Type", "application/json");
 
       let queue = {peopleAmount: 0, active: false}
-      
+
       fetch("http://shortline-app.herokuapp.com/companies/" + localStorage.getItem("idCompany") + "/queues",{
         method: 'GET',
         headers: headers
@@ -73,7 +74,7 @@ const MainMenu = () => {
                 maxAmount: jsonQueue.maxSize,
                 maxSize: jsonQueue.maxSize,
                 vacancies: jsonQueue.vacancies,
-                idCompany: jsonQueue.idCompany 
+                idCompany: jsonQueue.idCompany
               }
 
               localStorage.setItem("queue", JSON.stringify(queue));
@@ -85,19 +86,36 @@ const MainMenu = () => {
       }).finally (() => {
         console.log("terminou GET queues")
       })
-      
+
       return queue;
     }
   }
 
-  function handleIconClick() {
-    if(isCompany) {
-      setIsCompany(false);
-    }
-    else {
-      setIsCompany(true);
-    }
+  function loadAmountOfPeopleWaiting() {
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    fetch("http://shortline-app.herokuapp.com/reserves?username=" + localStorage.getItem("username"),{
+      method: 'GET',
+      headers: headers
+    })
+    .then((res) => {
+        if(res.ok) {
+          res.json().then(jsonQueue => {
+            setAmountOfPeopleWaiting(jsonQueue.length);
+            localStorage.setItem("queueMembers", JSON.stringify(jsonQueue));
+          })
+        }
+    }).catch((e) => {
+      console.log(e)
+    }).finally (() => {
+      console.log("terminou GET queueMembers")
+    })
   }
+
+  useEffect(function() {
+    loadAmountOfPeopleWaiting();
+  }, [])
 
   function handleNewQueueClick() {
     setModalVisible(true);
@@ -127,7 +145,7 @@ const MainMenu = () => {
       localStorage.removeItem("queue");
       window.location.reload(true);
       console.log("terminou desativar queues")
-    })    
+    })
   }
 
   const saveNewQueue = async (maxAmount) => {
@@ -147,7 +165,7 @@ const MainMenu = () => {
         headers: headers,
         body: JSON.stringify({
           "maxSize": maxAmount,
-          "idCompany": localStorage.getItem("idCompany") 
+          "idCompany": localStorage.getItem("idCompany")
         })
       }).then((res) => {
           if(res.ok) {
@@ -159,17 +177,17 @@ const MainMenu = () => {
                 peopleAmount: 0,
                 maxAmount: maxAmount,
                 maxSize: maxAmount,
-                idCompany: localStorage.getItem("idCompany") 
+                idCompany: localStorage.getItem("idCompany")
               }));
               setQueue({
                 active: true,
                 peopleAmount: 0,
                 maxAmount: maxAmount,
                 maxSize: maxAmount,
-                idCompany: localStorage.getItem("idCompany") 
+                idCompany: localStorage.getItem("idCompany")
               })
-            }) 
-            
+            })
+
           }
       }).catch((e) => {
         console.log(e)
@@ -209,9 +227,9 @@ const MainMenu = () => {
               </CCardHeader>
               <CCardBody style={{paddingLeft: '30px', paddingRight: '30px', paddingTop: '20px', paddingBottom: '20px'}}>
                 <CCardText style={{fontSize: '20px', marginBottom: '5px'}}>• Sua fila está <b>{queueLocal.active ? "aberta" : "fechada"}</b></CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queueLocal.active ? ("Há " + queueLocal.peopleAmount + (queueLocal.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queueLocal.active ? ("Há " + amountOfPeopleWaiting + (amountOfPeopleWaiting !== 1 ? " grupos na fila" : " grupo na fila")) : ("Clique no botão para abrir a fila")}</CCardText>
                 <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{queueLocal.active ? ("A capacidade máxima é de " + queueLocal.maxAmount + " grupos") : ""}</CCardText>
-                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queueLocal.active && queueLocal.peopleAmount >= 1) ? ("Ainda há " + queueLocal.peopleAmount + (queueLocal.peopleAmount !== 1 ? " grupos na fila" : " grupo na fila")) : ""}</CCardText>
+                <CCardText style={{marginLeft: '15px', marginBottom: '5px', fontSize: '14px', opacity: '0.7'}}>{(!queueLocal.active && amountOfPeopleWaiting >= 1) ? ("Ainda há " + amountOfPeopleWaiting + (amountOfPeopleWaiting !== 1 ? " grupos na fila" : " grupo na fila")) : ""}</CCardText>
               </CCardBody>
               {!queueLocal.active ?
               <CButton style={{height: "6vh", margin: '10px'}} color='success' onClick={handleNewQueueClick}>Abrir fila</CButton> :
