@@ -95,14 +95,20 @@ const MainMenu = () => {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    fetch("http://shortline-app.herokuapp.com/reserves?username=" + localStorage.getItem("username"),{
+    fetch("http://shortline-app.herokuapp.com/reserves?username=" + localStorage.getItem("username") + "&is_company=true",{
       method: 'GET',
       headers: headers
     })
     .then((res) => {
         if(res.ok) {
           res.json().then(jsonQueue => {
-            setAmountOfPeopleWaiting(jsonQueue.length);
+            let aux = [];
+            for(let i = 0; i < jsonQueue.length; i++) {
+              if(jsonQueue[i].status !== 'O') {
+                aux.push(jsonQueue[i]);
+              }
+            }
+            setAmountOfPeopleWaiting(aux.length);
             localStorage.setItem("queueMembers", JSON.stringify(jsonQueue));
           })
         }

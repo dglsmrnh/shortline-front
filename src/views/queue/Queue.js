@@ -88,7 +88,7 @@ const Queue = () => {
         let auxAccepted = 0;
         let auxPending = 0;
         let tempQueueMembers = queueMembers;
-        tempQueueMembers = tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
+        tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
         element.status = 'O';
         tempQueueMembers.push(element);
         setQueueMembers(tempQueueMembers);
@@ -141,7 +141,7 @@ const Queue = () => {
         let auxAccepted = 0;
         let auxPending = 0;
         let tempQueueMembers = queueMembers;
-        tempQueueMembers = tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
+        tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
         element.status = 'O';
         tempQueueMembers.push(element);
         setQueueMembers(tempQueueMembers);
@@ -179,7 +179,7 @@ const Queue = () => {
     let auxPending = 0;
     let tempQueueMembers = queueMembers;
     console.log(tempQueueMembers);
-    tempQueueMembers = tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
+    tempQueueMembers.splice(tempQueueMembers.indexOf(element), 1);
     console.log('Apos splice');
     console.log(tempQueueMembers);
     element.status = 'A';
