@@ -15,12 +15,13 @@ import ClientItem from '../../components/custom/ClientItem/ClientItem';
 import RequestItem from "../../components/custom/RequestItem/RequestItem";
 import swal from "sweetalert";
 import CIcon from "@coreui/icons-react";
-import { cilArrowLeft } from "@coreui/icons";
+import { cibWindows, cilArrowLeft } from "@coreui/icons";
 
 const Queue = () => {
 
   let [isActive, setIsActive] = useState(true);
   let [queueMembers, setQueueMembers] = useState([]);
+  let [refresh, setRefresh] = useState(false);
   let [acceptedMembers, setAcceptedMembers] = useState([]);
   let [pendingMembers, setPendingMembers] = useState([]);
 
@@ -163,7 +164,8 @@ const Queue = () => {
         })
         .then((res) => {
             if(res.ok) {
-              console.log('Removido')
+              console.log('Removido');
+              window.location.reload();
             }
         }).catch((e) => {
           console.log(e)
@@ -172,6 +174,7 @@ const Queue = () => {
         })
       }
     })
+
   }
 
   function acceptClientRequest(element) {
@@ -205,7 +208,8 @@ const Queue = () => {
     })
     .then((res) => {
         if(res.ok) {
-          console.log('Removido')
+          console.log('Removido');
+          window.location.reload();
         }
     }).catch((e) => {
       console.log(e)

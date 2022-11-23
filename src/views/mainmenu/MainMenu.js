@@ -280,8 +280,8 @@ const MainMenu = () => {
     reloadPage()
     return(
       <div>
-      <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
-          <CContainer style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+      <CContainer style={{width: '100%', height: '100%'}}>
+          <CContainer style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <CButton onClick={goToSearch} color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Entrar em uma fila/ver a fila atual
             </CButton>

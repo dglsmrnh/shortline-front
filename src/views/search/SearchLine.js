@@ -38,14 +38,14 @@ const Range = () => {
     const data = e.currentTarget;
 
     if(data.checkValidity() === false) {
-      e.stopPropagation();      
+      e.stopPropagation();
     }
     e.preventDefault();
 
     setValidated(true);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    
+
     const address = data.local.value;
     const numberOfPeople = data.numberOfPeople?.value;
 
@@ -63,10 +63,10 @@ const Range = () => {
           let body = JSON.stringify({
             idQueue: jsonQueue.id,
             idUser: localStorage.getItem("userId"),
-            numberOfPeople: numberOfPeople  
+            numberOfPeople: numberOfPeople
           })
-          fetchReserve(body, myHeaders)       
-        }) 
+          fetchReserve(body, myHeaders)
+        })
       }
     })
     .catch(() => {
@@ -136,7 +136,7 @@ const Range = () => {
   function cancelReserve(){
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    
+
     let body = reserves.find(e => e !== null);
     body.status = "O";
 
@@ -161,7 +161,7 @@ const Range = () => {
       console.log("cancelou reserva");
     })
   }
-  
+
   function handleGoBack() {
     window.location.href = "/#/mainmenu";
   }
@@ -195,7 +195,7 @@ const Range = () => {
   if(hasReserve === "default") {
     return (
       <CContainer style={{width: '100%', height: '100%'}}>
-      </CContainer>    
+      </CContainer>
     );
   }
   else if(hasReserve){
@@ -242,37 +242,43 @@ const Range = () => {
                       </CCardGroup>
 
                     </CCardHeader>
-                    <CContainer style={{display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
-                      <CCardGroup>
-                        <CCardText style={{paddingTop: "10px", fontSize: '90px'}}>{item.code}</CCardText>
-                      </CCardGroup>
+                    <CContainer style={{display: "flex", justifyContent: "space-between"}}>
+                      <CContainer>
+                        <CContainer style={{display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
+                          <CCardGroup>
+                            <CCardText style={{paddingTop: "10px", fontSize: '90px'}}>{item.code}</CCardText>
+                          </CCardGroup>
+                        </CContainer>
+                        <CContainer style={{display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
+                          <CCardGroup>
+                            <CCardText style={{paddingTop: "10px", fontSize: '30px'}}>{item.code !== undefined ? "Posição na fila" : "Fora da fila"}</CCardText>
+                          </CCardGroup>
+                        </CContainer>
+                      </CContainer>
+                      <CContainer>
+                        { reserves !== [] || reserves !== null || reserves !== undefined ?
+                          <CCard style={{ width: '18rem' }}>
+                            <CContainer ref={qrRef}>{qrcode}</CContainer>
+                            <CCardBody>
+                              <CCardTitle>Reserva</CCardTitle>
+                              <CContainer class="mx-auto">
+                                <CButton variant="outline" onClick={downloadQRCode}>
+                                  Download QR code
+                                </CButton>
+                              </CContainer>
+                            </CCardBody>
+                          </CCard> : ""
+                        }
+                      </CContainer>
                     </CContainer>
-                    <CContainer style={{display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
-                      <CCardGroup>
-                        <CCardText style={{paddingTop: "10px", fontSize: '30px'}}>{item.code !== undefined ? "Posição na fila" : "Fora da fila"}</CCardText>
-                      </CCardGroup>
-                    </CContainer>
-                      { reserves !== [] || reserves !== null || reserves !== undefined ?
-                      <CCard style={{ width: '18rem' }}>
-                        <CContainer ref={qrRef}>{qrcode}</CContainer>
-                        <CCardBody>
-                          <CCardTitle>Reserva</CCardTitle>
-                          <CContainer class="mx-auto">
-                            <CButton variant="outline" onClick={downloadQRCode}>
-                              Download QR code
-                            </CButton>
-                          </CContainer>
-                        </CCardBody>
-                      </CCard> : "" 
-                      }
-                </CContainer>        
+                </CContainer>
                 )
-              }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Sem Reservas</CCardText>                
+              }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Sem Reservas</CCardText>
             }
           </CCardBody>
         </CCard>
       </CContainer>
-     </CContainer>    
+     </CContainer>
     );
   } else {
     return (
@@ -282,10 +288,10 @@ const Range = () => {
             <CCardHeader>
               <strong>Procurar seu estabelecimento</strong>
             </CCardHeader>
-            <CCardBody className="p-4">  
+            <CCardBody className="p-4">
             <CAlert color="warning" visible={visibleAlert} onClose={() => setAlert(false)}>
               Estabelecimento não está em funcionamento.
-            </CAlert>              
+            </CAlert>
             <CForm className="needs-validation" noValidate validated={validated} onSubmit={handleSubmit}>
               <CInputGroup className="mb-3">
                 <CInputGroupText>
@@ -305,7 +311,7 @@ const Range = () => {
               <div className="d-grid">
                 <CButton color="success" type="submit">Fazer reserva</CButton>
               </div>
-              </CForm>                                   
+              </CForm>
             </CCardBody>
           </CCard>
         </CCol>
