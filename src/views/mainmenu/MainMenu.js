@@ -30,9 +30,9 @@ const MainMenu = () => {
   const qrcode = (
     <QRCodeCanvas
       id="qrCode"
-      value={{
+      value={JSON.stringify({
         id: 1
-      }}
+      })}
       size={250}
       level={"H"}
       includeMargin = {true}
