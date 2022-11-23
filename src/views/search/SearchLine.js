@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import {
   CButton,
   CCard,
@@ -20,6 +20,8 @@ import {
 import CIcon from '@coreui/icons-react'
 import Map from '../../components/custom/Map/Map';
 import { cilCalendar, cilListNumbered, cilLockLocked, cilMap, cilPhone, cilUser , cilArrowLeft} from '@coreui/icons'
+import { QRCodeCanvas } from "qrcode.react";
+
 
 const Range = () => {
 
@@ -165,6 +167,30 @@ const Range = () => {
   }
 
 
+  const downloadQRCode = (e) => {
+    e.preventDefault();
+    let canvas = qrRef.current.querySelector("canvas");
+    let image = canvas.toDataURL("image/png");
+    let anchor = document.createElement("a");
+    anchor.href = image;
+    anchor.download = `qr-code.png`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+  };
+
+  const qrRef = useRef();
+
+  const qrcode = (
+    <QRCodeCanvas
+      id="qrCode"
+      value={undefined}
+      size={250}
+      level={"H"}
+      includeMargin = {true}
+    />
+   );
+
   getReserve()
   if(hasReserve === "default") {
     return (
@@ -226,7 +252,20 @@ const Range = () => {
                         <CCardText style={{paddingTop: "10px", fontSize: '30px'}}>{item.code !== undefined ? "Posição na fila" : "Fora da fila"}</CCardText>
                       </CCardGroup>
                     </CContainer>
-                  </CContainer>        
+                      { reserves !== [] || reserves !== null || reserves !== undefined ?
+                      <CCard style={{ width: '18rem' }}>
+                        <CContainer ref={qrRef}>{qrcode}</CContainer>
+                        <CCardBody>
+                          <CCardTitle>Reserva</CCardTitle>
+                          <CContainer class="mx-auto">
+                            <CButton variant="outline" onClick={downloadQRCode}>
+                              Download QR code
+                            </CButton>
+                          </CContainer>
+                        </CCardBody>
+                      </CCard> : "" 
+                      }
+                </CContainer>        
                 )
               }) : <CCardText style={{textAlign: "center", fontFamily: "Poppins", fontSize: "24px", marginTop: "13px", marginBottom: "25px", opacity: "70%"}}>Sem Reservas</CCardText>                
             }

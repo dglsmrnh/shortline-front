@@ -13,32 +13,6 @@ import { CChart } from "@coreui/react-chartjs";
 
 const MainMenu = () => {
 
-  const downloadQRCode = (e) => {
-    e.preventDefault();
-    let canvas = qrRef.current.querySelector("canvas");
-    let image = canvas.toDataURL("image/png");
-    let anchor = document.createElement("a");
-    anchor.href = image;
-    anchor.download = `qr-code.png`;
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
-  };
-
-  const qrRef = useRef();
-
-  const qrcode = (
-    <QRCodeCanvas
-      id="qrCode"
-      value={JSON.stringify({
-        id: 1
-      })}
-      size={250}
-      level={"H"}
-      includeMargin = {true}
-    />
-   );
-
   let [isInfoEnable, setIsInfoEnable] = useState(false); //Vem do backend
   let [isCompany, setIsCompany] = useState(localStorage.getItem("isCompany") === "true"); //Vem do backend
   let [modalVisible, setModalVisible] = useState(false);
@@ -308,22 +282,6 @@ const MainMenu = () => {
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
           <CContainer style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            {
-              
-              <CContainer>
-                <CCard style={{ width: '18rem' }}>
-                  <CContainer ref={qrRef}>{qrcode}</CContainer>
-                  <CCardBody>
-                    <CCardTitle>Reserva</CCardTitle>
-                    <CContainer class="mx-auto">
-                      <CButton variant="outline" onClick={downloadQRCode}>
-                        Download QR code
-                      </CButton>
-                    </CContainer>
-                  </CCardBody>
-                </CCard>
-              </CContainer>
-            }
             <CButton onClick={goToSearch} color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Entrar em uma fila/ver a fila atual
             </CButton>
