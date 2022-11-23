@@ -30,7 +30,9 @@ const MainMenu = () => {
   const qrcode = (
     <QRCodeCanvas
       id="qrCode"
-      value={JSON.stringify(() => reserveInfo)}
+      value={{
+        id: 1
+      }}
       size={250}
       level={"H"}
       includeMargin = {true}
@@ -307,7 +309,7 @@ const MainMenu = () => {
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
           <CContainer style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             {
-              reserveInfo !== null &&
+              
               <CContainer>
                 <CCard style={{ width: '18rem' }}>
                   <CContainer ref={qrRef}>{qrcode}</CContainer>
