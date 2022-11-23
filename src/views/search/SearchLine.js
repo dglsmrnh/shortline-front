@@ -184,7 +184,7 @@ const Range = () => {
   const qrcode = (
     <QRCodeCanvas
       id="qrCode"
-      value={undefined}
+      value={reserves !== [] ? reserves.find(e => e !== null)?.id : ""}
       size={250}
       level={"H"}
       includeMargin = {true}
@@ -202,7 +202,7 @@ const Range = () => {
     return (
     <CContainer style={{width: '100%', height: '100%'}}>
       <CContainer style={{fontFamily: 'Poppins', display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
-        <CCard style={{width: '42vw', height: '60vh'}}>
+        <CCard style={{width: '42vw', height: '70vh'}}>
           <CCardHeader>
             <CCardGroup style={{justifyContent: 'space-between'}}>
               <CCardTitle style={{fontSize: "24px", fontWeight: "bold", marginBottom: "10px"}}>Minha Reserva Ativa</CCardTitle>
@@ -255,19 +255,16 @@ const Range = () => {
                           </CCardGroup>
                         </CContainer>
                       </CContainer>
-                      <CContainer>
-                        { reserves !== [] || reserves !== null || reserves !== undefined ?
-                          <CCard style={{ width: '18rem' }}>
+                      <CContainer style={{display: 'flex', flexDirection: 'row', alignContent: "center", justifyContent: 'center'}}>
+                        { true ?
+                          <CContainer style={{alignContent: "center", justifyContent: 'center'}}>
                             <CContainer ref={qrRef}>{qrcode}</CContainer>
-                            <CCardBody>
-                              <CCardTitle>Reserva</CCardTitle>
-                              <CContainer class="mx-auto">
+                            <CContainer style={{marginLeft: '35px'}}>
                                 <CButton variant="outline" onClick={downloadQRCode}>
                                   Download QR code
                                 </CButton>
-                              </CContainer>
-                            </CCardBody>
-                          </CCard> : ""
+                            </CContainer>
+                          </CContainer> : ""
                         }
                       </CContainer>
                     </CContainer>
