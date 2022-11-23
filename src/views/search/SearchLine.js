@@ -130,6 +130,35 @@ const Range = () => {
       console.log("buscou reserva");
     })
   }
+
+  function cancelReserve(){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    let body = reserves.find(e => e !== null);
+    body.status = "O";
+
+    fetch("http://shortline-app.herokuapp.com/reserves/"+body.id, {
+      method: 'PUT',
+      headers: myHeaders,
+      body: JSON.stringify(body)
+    })
+    .then(res => {
+      if(res.ok) {
+        setReserves([])
+      }
+    })
+    .catch(() => {
+      if(retry < 2){
+        retry += 1;
+        cancelReserve();
+      } else {
+        retry = 0;
+      }
+    }).finally(() => {
+      console.log("cancelou reserva");
+    })
+  }
   
   function handleGoBack() {
     window.location.href = "/#/mainmenu";
@@ -183,7 +212,7 @@ const Range = () => {
 
                       <CCardGroup style={{justifyContent: 'space-between', paddingTop: "10px"}}>
                         <CCardText style={{paddingTop: "10px"}}>Check-Out: { item.checkOut !== null && item.checkOut !== undefined ? item.checkOut : "Não realizado" }</CCardText>
-                        <CButton>Cancelar Reserva</CButton>
+                        <CButton onClick={cancelReserve} style={{color:"danger"}}>Cancelar Reserva</CButton>
                       </CCardGroup>
 
                     </CCardHeader>
