@@ -184,7 +184,7 @@ const Range = () => {
   const qrcode = (
     <QRCodeCanvas
       id="qrCode"
-      value={reserves !== [] ? reserves.find(e => e !== null)?.id : ""}
+      value={reserves !== [] ? JSON.stringify(reserves.find(e => e !== null)) : JSON.stringify({id: 1})}
       size={250}
       level={"H"}
       includeMargin = {true}
