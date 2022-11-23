@@ -8,7 +8,7 @@ import swal from "sweetalert";
 
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
-import { CModal, CContainer, CButton, CCard, CCardBody, CCardHeader, CCardText, CCardTitle } from "@coreui/react";
+import { CModal, CContainer, CButton, CCard, CCardBody, CCardHeader, CCardText, CCardTitle, CCardSubtitle } from "@coreui/react";
 import { CChart } from "@coreui/react-chartjs";
 
 const MainMenu = () => {
@@ -43,9 +43,7 @@ const MainMenu = () => {
   let [queue, setQueue] = useState(getQueue());
   let [reserveInfo, setReserveInfo] = useState(
     {
-      name: "Giuseppe Kadura",
-      queue: 3,
-      posicao: 4
+      id: 1
     }
   )
   let [amountOfPeopleWaiting, setAmountOfPeopleWaiting] = useState(0);
@@ -308,6 +306,22 @@ const MainMenu = () => {
       <div>
       <CContainer style={{width: '100%', height: '100%', maxWidth: '1000px'}}>
           <CContainer style={{fontFamily: 'Poppins', width: '90vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            {
+              reserveInfo !== null &&
+              <CContainer>
+                <CCard style={{ width: '18rem' }}>
+                  <CContainer ref={qrRef}>{qrcode}</CContainer>
+                  <CCardBody>
+                    <CCardTitle>Reserva</CCardTitle>
+                    <CContainer class="mx-auto">
+                      <CButton variant="outline" onClick={downloadQRCode}>
+                        Download QR code
+                      </CButton>
+                    </CContainer>
+                  </CCardBody>
+                </CCard>
+              </CContainer>
+            }
             <CButton onClick={goToSearch} color="success" style={{height: '12%', width: '90%', margin: '15px'}}>
               Entrar em uma fila/ver a fila atual
             </CButton>
